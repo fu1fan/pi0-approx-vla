@@ -10,6 +10,7 @@
 ## Network / Proxy
 - [network] Checked HTTP_PROXY / HTTPS_PROXY / ALL_PROXY: all empty.
 - [network] No downloads performed yet; current PyTorch module experiments only need installed local packages.
+- [network] `transformers` and `accelerate` are not installed, but they are not required for these module-level experiments; skipped PyPI access.
 
 ## Git
 - note: workspace `.git` is mounted read-only by the execution environment, so Git metadata is stored in `/tmp/pi0-approx-vla-git` and commands use `--git-dir=/tmp/pi0-approx-vla-git --work-tree=/home/fu1fan/Develop/PROJECTS/pi0-approx-vla`.
@@ -17,7 +18,7 @@
 - linear benchmark commit: `cdb4f2d`
 - projector benchmark commit: `8799611`
 - softmax benchmark commit: `1f2144f`
-- gelu/rmsnorm benchmark commit: pending
+- gelu/rmsnorm benchmark commit: `e244db2`
 - summary commit: pending
 
 ## Experiments
@@ -52,8 +53,9 @@
 
 ## Problems and Fixes
 - CUDA requested but unavailable: `nvidia-smi` cannot communicate with the NVIDIA driver and PyTorch reports CUDA unavailable. Experiments are run with `--device cuda`, and scripts safely fall back to CPU through `resolve_device`.
+- Plotting first wrote PNGs but failed before `summary.md` because `nvidia-smi` returned no captured stderr in the plotting subprocess. Fixed `maybe_nvidia_smi()` to handle empty diagnostics and reran successfully.
 
 ## Final Outputs
-- CSV: pending
-- figures: pending
-- summary: pending
+- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`
+- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`
+- summary: `results/summary.md`

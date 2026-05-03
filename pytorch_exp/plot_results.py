@@ -64,7 +64,7 @@ def best_rows(df, experiment, metric="cosine_similarity", n=1):
     subset = df[df["experiment"].eq(experiment)].copy()
     if subset.empty or metric not in subset.columns:
         return subset
-    subset = subset[~subset["variant"].astype(str).str.contains("fp32|torch_softmax|torch_gelu|fp32_rmsnorm")]
+    subset = subset[~subset["variant"].astype(str).str.contains("fp32|fp16|torch_softmax|torch_gelu|fp32_rmsnorm")]
     return subset.sort_values(metric, ascending=False).head(n)
 
 
@@ -85,7 +85,10 @@ def maybe_nvidia_smi():
         proc = subprocess.run(["nvidia-smi", "--query-gpu=name,memory.total", "--format=csv,noheader"], check=False, capture_output=True, text=True)
     except FileNotFoundError:
         return "nvidia-smi not found"
-    return proc.stdout.strip() if proc.returncode == 0 else proc.stderr.strip().splitlines()[0]
+    if proc.returncode == 0:
+        return proc.stdout.strip()
+    message = proc.stderr.strip() or proc.stdout.strip()
+    return message.splitlines()[0] if message else "nvidia-smi failed without diagnostic output"
 
 
 def summarize_top_ppt(df):
