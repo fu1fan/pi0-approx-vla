@@ -20,7 +20,7 @@
 - softmax benchmark commit: `1f2144f`
 - gelu/rmsnorm benchmark commit: `e244db2`
 - summary commit: `b1b74e8`
-- toy flow matching commit: pending
+- toy flow matching commit: `f1274ed`
 
 ## Experiments
 
