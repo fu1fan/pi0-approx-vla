@@ -16,7 +16,7 @@
 - initial commit: `96d3ebf`
 - linear benchmark commit: `cdb4f2d`
 - projector benchmark commit: `8799611`
-- softmax benchmark commit: pending
+- softmax benchmark commit: `1f2144f`
 - gelu/rmsnorm benchmark commit: pending
 - summary commit: pending
 
@@ -44,11 +44,11 @@
 - fixes: softmax inputs are stabilized by subtracting max, LUT/PWL/Taylor paths clamp to `[-8, 0]`, and KL uses eps through `tensor_metrics`.
 
 ### GELU / RMSNorm Approximation
-- command: pending
+- command: `conda run -n torch python pytorch_exp/exp_gelu_rmsnorm_approx.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/gelu_rmsnorm_approx.csv`
-- key observations: pending
-- issues: pending
-- fixes: pending
+- key observations: GELU LUT had very low error (MSE around 1e-10), tanh GELU was also accurate, and coarse PWL GELU had higher but still small error. RMSNorm INT8 input fake quant kept cosine around 0.999997; approximate rsqrt was nearly identical to FP32 in this CPU run.
+- issues: CUDA request fell back to CPU.
+- fixes: RMSNorm uses eps and clamp before reciprocal sqrt; all outputs were checked finite.
 
 ## Problems and Fixes
 - CUDA requested but unavailable: `nvidia-smi` cannot communicate with the NVIDIA driver and PyTorch reports CUDA unavailable. Experiments are run with `--device cuda`, and scripts safely fall back to CPU through `resolve_device`.
