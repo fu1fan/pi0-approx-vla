@@ -14,7 +14,7 @@
 ## Git
 - note: workspace `.git` is mounted read-only by the execution environment, so Git metadata is stored in `/tmp/pi0-approx-vla-git` and commands use `--git-dir=/tmp/pi0-approx-vla-git --work-tree=/home/fu1fan/Develop/PROJECTS/pi0-approx-vla`.
 - initial commit: `96d3ebf`
-- linear benchmark commit: pending
+- linear benchmark commit: `cdb4f2d`
 - projector benchmark commit: pending
 - softmax benchmark commit: pending
 - gelu/rmsnorm benchmark commit: pending
@@ -30,11 +30,11 @@
 - fixes: used default required shapes only and kept repeat=30/warmup=5.
 
 ### Projector Quantization
-- command: pending
+- command: `conda run -n torch python pytorch_exp/exp_projector_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/projector_quant.csv`
-- key observations: pending
-- issues: pending
-- fixes: pending
+- key observations: INT8 fake quant reached cosine about 0.99989 for the simulated VLM projector. INT4 weight-only reduced estimated weight storage from 9.0 MB FP32 to 1.125 MB but cosine dropped to about 0.98987.
+- issues: CUDA request fell back to CPU because the NVIDIA driver is not visible.
+- fixes: kept target projector shape and repeat=30/warmup=5; no NaN/Inf observed.
 
 ### Softmax Approximation
 - command: pending
