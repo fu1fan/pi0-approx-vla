@@ -123,7 +123,10 @@ def build_conclusions(df):
         if not approx.empty:
             stable = approx.sort_values(["kl_divergence", "mse"], ascending=True).iloc[0]
             lines.append(f"- Softmax approximation is most stable with {stable['variant']} by KL/MSE on the current run.")
-    lines.append("- CUDA experiments should be rerun after the NVIDIA driver is visible to PyTorch; current measurements may be CPU fallback.")
+    if torch.cuda.is_available():
+        lines.append("- Current CSV and figures are from CUDA runs.")
+    else:
+        lines.append("- CUDA experiments should be rerun after the NVIDIA driver is visible to PyTorch; current measurements may be CPU fallback.")
     return lines
 
 
@@ -176,7 +179,7 @@ def write_summary(df):
             "- Prioritize INT8 linear/projector GEMM kernels first because they map directly to bandwidth and DSP savings.",
             "- Implement LUT or PWL softmax exp next; validate with KL divergence before integration.",
             "- Keep GELU LUT/PWL and RMSNorm reciprocal-sqrt kernels as smaller nonlinear accelerator targets.",
-            "- Re-run CUDA latency after fixing driver visibility, then use GPU numbers for the final PPT.",
+            "- Use the current CUDA CSVs as the PPT latency source; rerun only if changing repeat/shape settings.",
             "",
         ]
     )
