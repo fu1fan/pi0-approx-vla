@@ -21,7 +21,7 @@
 - gelu/rmsnorm benchmark commit: `e244db2`
 - summary commit: `b1b74e8`
 - toy flow matching commit: `f1274ed`
-- scale sweep benchmark commit: `a8296d3`
+- scale sweep benchmark commit: `b48d703`
 
 ## Experiments
 
