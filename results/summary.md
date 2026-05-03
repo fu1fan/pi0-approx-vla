@@ -14,18 +14,21 @@
 - projector_quant
 - rmsnorm_approx
 - softmax_approx
+- toy_flow_matching
 
 ## CSV Outputs
 - `results/csv/linear_quant.csv`
 - `results/csv/projector_quant.csv`
 - `results/csv/softmax_approx.csv`
 - `results/csv/gelu_rmsnorm_approx.csv`
+- `results/csv/toy_flow_matching.csv`
 
 ## Figures
 - `results/figures/latency_compare.png`
 - `results/figures/error_compare.png`
 - `results/figures/cosine_compare.png`
 - `results/figures/model_size_compare.png`
+- `results/figures/toy_flow_matching_curve.png`
 
 ## PPT-Ready Results
 - linear_quant / int8_fake_quant: cosine=0.999886, MSE=2.319e-04, latency=1.056 ms.

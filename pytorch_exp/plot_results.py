@@ -132,13 +132,21 @@ def write_summary(df):
     ppt_lines = summarize_top_ppt(df)
     conclusions = build_conclusions(df)
     completed = sorted(df["experiment"].unique()) if not df.empty else []
+    toy_csv = CSV_DIR / "toy_flow_matching.csv"
+    toy_fig = FIG_DIR / "toy_flow_matching_curve.png"
+    if toy_csv.exists() and "toy_flow_matching" not in completed:
+        completed.append("toy_flow_matching")
     csv_paths = [str(path) for path in EXPECTED_CSV if path.exists()]
+    if toy_csv.exists():
+        csv_paths.append(str(toy_csv))
     figure_paths = [
         "results/figures/latency_compare.png",
         "results/figures/error_compare.png",
         "results/figures/cosine_compare.png",
         "results/figures/model_size_compare.png",
     ]
+    if toy_fig.exists():
+        figure_paths.append(str(toy_fig))
     text = [
         "# PyTorch Experiment Summary",
         "",

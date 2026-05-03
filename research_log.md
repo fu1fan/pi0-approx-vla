@@ -19,7 +19,8 @@
 - projector benchmark commit: `8799611`
 - softmax benchmark commit: `1f2144f`
 - gelu/rmsnorm benchmark commit: `e244db2`
-- summary commit: pending
+- summary commit: `b1b74e8`
+- toy flow matching commit: pending
 
 ## Experiments
 
@@ -51,11 +52,19 @@
 - issues: CUDA request fell back to CPU.
 - fixes: RMSNorm uses eps and clamp before reciprocal sqrt; all outputs were checked finite.
 
+### Toy Flow Matching Demo
+- command: `conda run -n torch python pytorch_exp/toy_flow_matching_demo.py --device cuda --steps 400 --batch-size 512`
+- result csv: `results/csv/toy_flow_matching.csv`
+- result figure: `results/figures/toy_flow_matching_curve.png`
+- key observations: toy velocity MSE dropped from about 1.43 at step 1 to about 0.29 by step 400, demonstrating the conditional noisy-action-to-velocity training loop.
+- issues: CUDA request fell back to CPU; first run warned that Matplotlib config path was not writable.
+- fixes: set `MPLCONFIGDIR=/tmp/pi0_approx_vla_matplotlib` before importing Matplotlib and reran cleanly.
+
 ## Problems and Fixes
 - CUDA requested but unavailable: `nvidia-smi` cannot communicate with the NVIDIA driver and PyTorch reports CUDA unavailable. Experiments are run with `--device cuda`, and scripts safely fall back to CPU through `resolve_device`.
 - Plotting first wrote PNGs but failed before `summary.md` because `nvidia-smi` returned no captured stderr in the plotting subprocess. Fixed `maybe_nvidia_smi()` to handle empty diagnostics and reran successfully.
 
 ## Final Outputs
-- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`
-- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`
+- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`
+- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`
 - summary: `results/summary.md`
