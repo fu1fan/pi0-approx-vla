@@ -13,7 +13,7 @@
 - [network] `transformers` and `accelerate` are not installed, but they are not required for these module-level experiments; skipped PyPI access.
 
 ## Git
-- note: workspace `.git` is mounted read-only by the execution environment, so Git metadata is stored in `/tmp/pi0-approx-vla-git` and commands use `--git-dir=/tmp/pi0-approx-vla-git --work-tree=/home/fu1fan/Develop/PROJECTS/pi0-approx-vla`.
+- note: Git metadata has been migrated back into the project-local `.git/`; normal commands such as `git status` and `git log` now work from the repository root. Earlier commits were temporarily stored in `/tmp/pi0-approx-vla-git` because the Codex sandbox exposed `.git/` as an empty read-only directory.
 - initial commit: `96d3ebf`
 - linear benchmark commit: `cdb4f2d`
 - projector benchmark commit: `8799611`
