@@ -7,6 +7,6 @@
 
 - listed files: 6
 - estimated weight bytes: 14005618584
-- full checkpoint skipped: estimated weights 13.04 GiB exceed limit 2.00 GiB.
+- full checkpoint allowed by size limit.
 - downloaded to: `external/pi0_checkpoints/lerobot_pi0_base`
-- allow_patterns: `['*.json', '*.md', '*.txt', '*.index.json', 'config.*', 'README*']`
+- allow_patterns: `None`
