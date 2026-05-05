@@ -111,12 +111,21 @@
 - issues: no local safetensors/index was available after size-based skip, so `results/pi0_checkpoint_keys.txt` contains no parameter keys and real module extraction was skipped. No unverified third-party weights were used.
 - fixes: added reusable download/inspect/extract tools and `.gitignore` rules so future local full-weight downloads and extracted `.pt` files are not committed.
 
+### pi0 Real-weight Quantization
+- command: `conda run -n torch python pytorch_exp/exp_pi0_real_weight_quant.py`
+- result csv: `results/csv/pi0_real_weight_quant.csv`
+- result figures: `results/figures/pi0_real_weight_quant_latency.png`, `results/figures/pi0_real_weight_quant_error.png`, `results/figures/pi0_real_weight_quant_size.png`
+- summary: `results/pi0_real_weight_quant_summary.md`
+- key observations: real-weight numeric benchmark was skipped because no verified local pi0 tensor weights were available after Stage 3 size-based download downgrade.
+- issues: `lerobot/pi0_base` stores weights as one 13.04 GiB safetensors file and no local index/tensor keys were available under the 2 GiB download limit.
+- fixes: generated explicit skipped-module CSV/figures/summary without fabricating metrics.
+
 ## Problems and Fixes
 - Initial sandboxed CUDA check: `nvidia-smi` could not communicate with the NVIDIA driver and PyTorch reported CUDA unavailable, so scripts safely fell back to CPU through `resolve_device`.
 - Diagnosis update: the default Codex sandbox did not expose `/dev/nvidia*`, so `nvidia-smi` and PyTorch CUDA failed only inside sandboxed commands. Escalated commands can access the host GPU; all main CSVs and figures were rerun on CUDA afterward.
 - Plotting first wrote PNGs but failed before `summary.md` because `nvidia-smi` returned no captured stderr in the plotting subprocess. Fixed `maybe_nvidia_smi()` to handle empty diagnostics and reran successfully.
 
 ## Final Outputs
-- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`, `results/csv/pi0_aligned_random_quant.csv`, `results/csv/pi0_aligned_random_simplify.csv`
-- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`, `results/figures/pi0_aligned_random_simplify_latency.png`, `results/figures/pi0_aligned_random_simplify_error.png`
+- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`, `results/csv/pi0_aligned_random_quant.csv`, `results/csv/pi0_aligned_random_simplify.csv`, `results/csv/pi0_real_weight_quant.csv`
+- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`, `results/figures/pi0_aligned_random_simplify_latency.png`, `results/figures/pi0_aligned_random_simplify_error.png`, `results/figures/pi0_real_weight_quant_latency.png`, `results/figures/pi0_real_weight_quant_error.png`, `results/figures/pi0_real_weight_quant_size.png`
 - summary: `results/summary.md`
