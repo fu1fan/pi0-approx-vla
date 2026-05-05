@@ -79,3 +79,10 @@
 - Implement LUT or PWL softmax exp next; validate with KL divergence before integration.
 - Keep GELU LUT/PWL and RMSNorm reciprocal-sqrt kernels as smaller nonlinear accelerator targets.
 - Use the current CUDA CSVs as the PPT latency source; rerun only if changing repeat/shape settings.
+
+## pi0-aligned Benchmark Extension
+- Random tensor + pi0-aligned quantization completed on CUDA: `results/csv/pi0_aligned_random_quant.csv` with 100 rows. INT8 minimum cosine was 0.998402; INT4/W4A8 showed materially larger error.
+- Random tensor + pi0-aligned simplification completed on CUDA: `results/csv/pi0_aligned_random_simplify.csv` with 59 rows. GELU/SiLU replacements were evaluated inside FFN output; softmax approximations include KL divergence; RMSNorm approximations include fake quant and Newton-Raphson rsqrt.
+- Real-weight stages are present as scripts and reports but skipped numerically because verified full pi0 weights were not locally downloaded. The single `lerobot/pi0_base` safetensors file is 13.04 GiB and exceeded the configured 2 GiB safety limit.
+- pi0-shape toy flow step reduction completed on CUDA: `results/csv/pi0_shape_flow_step_reduction.csv`; reducing from 10 to 2 Euler steps gave about 4.46x latency speedup vs the 10-step toy baseline, with MSE 4.32e-03 relative to the 10-step output.
+- Consolidated report: `results/final_pytorch_benchmark_report.md`.

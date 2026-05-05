@@ -62,6 +62,20 @@ Large optional shapes are intentionally gated behind `--include-large` because C
 - Figures: `results/figures/`
 - HLS reports copied from Vitis: `results/hls_reports/`
 
+## Latest PyTorch Benchmark Reports
+
+The current PyTorch side includes both earlier module microbenchmarks and newer pi0-aligned proxy benchmarks:
+
+- Random tensor + pi0-aligned shape quantization: `results/pi0_aligned_random_quant_summary.md`
+- Random tensor + pi0-aligned function simplification: `results/pi0_aligned_random_simplify_summary.md`
+- Real pi0 checkpoint metadata / extraction status: `results/pi0_checkpoint_download_status.md`, `results/pi0_extracted_modules.md`
+- Real pi0 weight + random input quantization status: `results/pi0_real_weight_quant_summary.md`
+- Real pi0 weight + random input simplification status: `results/pi0_real_weight_simplify_summary.md`
+- pi0-shape toy flow step reduction: `results/pi0_shape_flow_step_reduction_summary.md`
+- Consolidated report: `results/final_pytorch_benchmark_report.md`
+
+The real-weight stages were not numerically executed in this run because the verified `lerobot/pi0_base` checkpoint exposes a single 13.04 GiB `model.safetensors`, which was intentionally not downloaded under the configured 2 GiB safety limit. No real-weight metrics are fabricated.
+
 ## HLS / Vitis Unified
 
 Source the Vitis environment. The user-requested path is checked by `scripts/check_env.sh`; on this machine the discovered Vitis Unified path is `/opt/Xilinx/2025.2/Vitis/settings64.sh`.
