@@ -1,0 +1,6 @@
+experiment,task,status,skip_reason,uses_real_weights,input_type,variant
+pi0_real_weight_simplify,vlm_ffn_activation_replacement,skipped,no extracted real pi0 tensors available; full checkpoint download was skipped by size limit or extraction found no keys,False,random_tensor_if_available,not_run
+pi0_real_weight_simplify,action_expert_ffn_activation_replacement,skipped,no extracted real pi0 tensors available; full checkpoint download was skipped by size limit or extraction found no keys,False,random_tensor_if_available,not_run
+pi0_real_weight_simplify,real_qk_softmax_approximation,skipped,no extracted real pi0 tensors available; full checkpoint download was skipped by size limit or extraction found no keys,False,random_tensor_if_available,not_run
+pi0_real_weight_simplify,vlm_rmsnorm_approximation,skipped,no extracted real pi0 tensors available; full checkpoint download was skipped by size limit or extraction found no keys,False,random_tensor_if_available,not_run
+pi0_real_weight_simplify,action_rmsnorm_approximation,skipped,no extracted real pi0 tensors available; full checkpoint download was skipped by size limit or extraction found no keys,False,random_tensor_if_available,not_run
