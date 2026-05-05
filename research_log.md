@@ -91,12 +91,21 @@
 - issues: no OOM. Large FFN and quantized variants used reduced repeat through script policy to keep runtime bounded.
 - fixes: generated separate Stage 1 CSV/figures without replacing previous results.
 
+### pi0-aligned Random Simplification
+- command: `conda run -n torch python pytorch_exp/exp_pi0_aligned_random_simplify.py --device cuda --repeat 10 --warmup 3`
+- result csv: `results/csv/pi0_aligned_random_simplify.csv`
+- result figures: `results/figures/pi0_aligned_random_simplify_latency.png`, `results/figures/pi0_aligned_random_simplify_error.png`
+- summary: `results/pi0_aligned_random_simplify_summary.md`
+- key observations: CUDA run completed 59 rows covering FFN activation replacement, VLM/action attention softmax approximation, and RMSNorm approximation. Maximum relative L2 by subexperiment was 1.006901 for aggressive FFN activation replacement, 0.702048 for clipped/rough softmax approximations, and 0.011549 for RMSNorm approximations.
+- issues: first run completed compute but failed CSV writing because softmax rows included `kl_divergence` while earlier rows did not. Non-softmax KL was later made explicit as `not_applicable` to avoid NaN-like CSV fields.
+- fixes: updated common CSV writer to union all row fields, regenerated CSV/figures/summary, and verified numeric columns are finite.
+
 ## Problems and Fixes
 - Initial sandboxed CUDA check: `nvidia-smi` could not communicate with the NVIDIA driver and PyTorch reported CUDA unavailable, so scripts safely fell back to CPU through `resolve_device`.
 - Diagnosis update: the default Codex sandbox did not expose `/dev/nvidia*`, so `nvidia-smi` and PyTorch CUDA failed only inside sandboxed commands. Escalated commands can access the host GPU; all main CSVs and figures were rerun on CUDA afterward.
 - Plotting first wrote PNGs but failed before `summary.md` because `nvidia-smi` returned no captured stderr in the plotting subprocess. Fixed `maybe_nvidia_smi()` to handle empty diagnostics and reran successfully.
 
 ## Final Outputs
-- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`, `results/csv/pi0_aligned_random_quant.csv`
-- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`
+- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`, `results/csv/pi0_aligned_random_quant.csv`, `results/csv/pi0_aligned_random_simplify.csv`
+- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`, `results/figures/pi0_aligned_random_simplify_latency.png`, `results/figures/pi0_aligned_random_simplify_error.png`
 - summary: `results/summary.md`

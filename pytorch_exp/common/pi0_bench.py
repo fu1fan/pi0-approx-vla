@@ -127,8 +127,15 @@ def write_csv(path, rows):
     path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         raise RuntimeError(f"no rows to write: {path}")
+    fieldnames = []
+    seen = set()
+    for row in rows:
+        for key in row.keys():
+            if key not in seen:
+                fieldnames.append(key)
+                seen.add(key)
     with path.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
     print(f"wrote {path}")
@@ -168,4 +175,3 @@ def timed_stage(label):
             print(f"{label}: {elapsed:.2f}s")
 
     return Timer()
-
