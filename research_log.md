@@ -7,6 +7,19 @@
 - CUDA: `torch.cuda.is_available() == True` when commands are executed with GPU device access.
 - GPU: NVIDIA GeForce RTX 5060 Ti 16GB
 
+### Continuation Environment Check 2026-05-06
+- current commit before new work: `775000020291b42fbf5958ca62979f43d0adf7c9`
+- conda env: `torch`
+- Python: 3.13.12
+- PyTorch: 2.10.0+cu130
+- CUDA availability in current execution context: `False`
+- CUDA diagnostic: PyTorch reported `cudaGetDeviceCount` error 804; `nvidia-smi` reported `Driver/library version mismatch` with NVML library version 580.142.
+- GPU name: unavailable from PyTorch in this run; previous verified hardware is NVIDIA GeForce RTX 5060 Ti 16GB.
+- CPU: AMD Ryzen 9 7950X 16-Core Processor, 32 logical CPUs
+- OS: Linux ELITE-7950X 6.17.0-22-generic x86_64 / Ubuntu 24.04 family
+- action: continue with `--device auto` / CPU fallback where CUDA is unavailable; do not fabricate CUDA results.
+- recovery update: after GPU stack recovery, `nvidia-smi` reports driver 580.142 and PyTorch in conda env `torch` reports `torch.cuda.is_available() == True`, GPU `NVIDIA GeForce RTX 5060 Ti`; subsequent experiments should use CUDA.
+
 ## Network / Proxy
 - [network] Checked HTTP_PROXY / HTTPS_PROXY / ALL_PROXY: all empty.
 - [network] No downloads performed yet; current PyTorch module experiments only need installed local packages.
