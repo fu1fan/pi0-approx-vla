@@ -24,7 +24,8 @@
 - [network] Checked HTTP_PROXY / HTTPS_PROXY / ALL_PROXY: all empty.
 - [network] No downloads performed yet; current PyTorch module experiments only need installed local packages.
 - [network] `transformers` and `accelerate` are not installed, but they are not required for these module-level experiments; skipped PyPI access.
-- [network] Stage 3 attempted Hugging Face mirror `https://hf-mirror.com` for `lerobot/pi0_base`. Initial sandbox DNS failed; retried outside sandbox successfully for metadata. Full `model.safetensors` is 13.04 GiB and was skipped by the 2 GiB safety limit.
+- [network] Stage 3 attempted Hugging Face mirror `https://hf-mirror.com` for `lerobot/pi0_base`. Initial sandbox DNS failed; retried outside sandbox successfully for metadata.
+- [network] After explicit user approval, full `model.safetensors` download was allowed up to 20 GiB and completed from `https://hf-mirror.com`; local checkpoint cache remains ignored under `external/pi0_checkpoints/`.
 
 ## Git
 - note: Git metadata has been migrated back into the project-local `.git/`; normal commands such as `git status` and `git log` now work from the repository root. Earlier commits were temporarily stored in `/tmp/pi0-approx-vla-git` because the Codex sandbox exposed `.git/` as an empty read-only directory.
@@ -104,21 +105,22 @@
 ### pi0 Checkpoint Download and Extraction Utilities
 - commands:
   - `conda run -n torch python tools/download_pi0_checkpoint.py --repo-id lerobot/pi0_base --max-download-gb 2.0`
+  - `conda run -n torch python tools/download_pi0_checkpoint.py --repo-id lerobot/pi0_base --max-download-gb 20.0`
   - `conda run -n torch python tools/inspect_pi0_checkpoint.py --checkpoint-dir external/pi0_checkpoints/lerobot_pi0_base --out results/pi0_checkpoint_keys.txt`
   - `conda run -n torch python tools/extract_pi0_module_weights.py --checkpoint-dir external/pi0_checkpoints/lerobot_pi0_base --keys-file results/pi0_checkpoint_keys.txt --out-dir results/pi0_module_weights --report results/pi0_extracted_modules.md`
 - outputs: `results/pi0_checkpoint_download_status.md`, `results/pi0_checkpoint_files.txt`, `results/pi0_checkpoint_keys.txt`, `results/pi0_extracted_modules.md`
-- key observations: official openpi documents `gs://openpi-assets/checkpoints/pi0_base`; the verifiable Hugging Face/LeRobot mirror `lerobot/pi0_base` lists a single `model.safetensors` of 13.04 GiB plus small metadata files. Metadata files were downloaded to ignored external cache, but the full weight tensor file was skipped by the 2 GiB safety limit.
-- issues: no local safetensors/index was available after size-based skip, so `results/pi0_checkpoint_keys.txt` contains no parameter keys and real module extraction was skipped. No unverified third-party weights were used.
-- fixes: added reusable download/inspect/extract tools and `.gitignore` rules so future local full-weight downloads and extracted `.pt` files are not committed.
+- key observations: official openpi documents `gs://openpi-assets/checkpoints/pi0_base`; the verifiable Hugging Face/LeRobot mirror `lerobot/pi0_base` lists a single `model.safetensors` of 13.04 GiB plus small metadata files. After user approval, the full safetensors file was downloaded, 777 checkpoint keys were inspected, and 27 exact-match tensors were extracted for visual projector, VLM attention, VLM FFN, action expert FFN, action projection, and RMSNorm.
+- issues: the first pass intentionally skipped the large weight file under a 2 GiB safety limit; real-weight experiments were blocked until explicit approval. The extracted tensor bundle is about 898 MB and is intentionally ignored by Git.
+- fixes: added reusable download/inspect/extract tools, exact key selection, and `.gitignore` rules so checkpoint files and extracted `.pt` files are not committed.
 
 ### pi0 Real-weight Quantization
-- command: `conda run -n torch python pytorch_exp/exp_pi0_real_weight_quant.py`
+- command: `conda run -n torch python pytorch_exp/exp_pi0_real_weight_quant.py --device cuda --repeat 5 --warmup 2`
 - result csv: `results/csv/pi0_real_weight_quant.csv`
 - result figures: `results/figures/pi0_real_weight_quant_latency.png`, `results/figures/pi0_real_weight_quant_error.png`, `results/figures/pi0_real_weight_quant_size.png`
 - summary: `results/pi0_real_weight_quant_summary.md`
-- key observations: real-weight numeric benchmark was skipped because no verified local pi0 tensor weights were available after Stage 3 size-based download downgrade.
-- issues: `lerobot/pi0_base` stores weights as one 13.04 GiB safetensors file and no local index/tensor keys were available under the 2 GiB download limit.
-- fixes: generated explicit skipped-module CSV/figures/summary without fabricating metrics.
+- key observations: real-weight numeric benchmark completed on CUDA for 70 rows using extracted `lerobot/pi0_base` tensors and random inputs. INT8 minimum cosine was 0.994843 with max relative L2 0.101908. INT4 weight-only minimum cosine was 0.921080 with max relative L2 0.416103. W4A8 was similar to INT4 on the worst projection.
+- issues: true PyTorch fake quant latency includes quantize/dequantize overhead and does not represent a custom INT hardware kernel. Large FFN repeats were reduced automatically to keep runtime bounded.
+- fixes: used exact extracted weights in `[out_dim, in_dim]` layout with no transpose, generated numeric CSV/figures/summary, and preserved checkpoint/extracted tensors outside Git.
 
 ### pi0 Real-weight Simplification
 - command: `conda run -n torch python pytorch_exp/exp_pi0_real_weight_simplify.py`
@@ -158,3 +160,7 @@
 - [pi0_shape_flow_step_reduction] start device=cuda, train_steps=1500, hidden_dim=512.
 
 - [pi0_shape_flow_step_reduction] completed rows=5, csv=results/csv/pi0_shape_flow_step_reduction.csv.
+
+- [pi0_real_weight_quant] start device=cuda, selected=results/pi0_module_weights/selected_modules.pt.
+
+- [pi0_real_weight_quant] completed rows=70, csv=results/csv/pi0_real_weight_quant.csv.

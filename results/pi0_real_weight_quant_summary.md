@@ -1,12 +1,13 @@
 # pi0 Real-weight Quantization Summary
 
-This stage is intended to use real pi0 module weights with random tensor inputs. It can reflect module quantization error under real parameter distributions, but still cannot represent robot task success rate.
+This stage uses real pi0 module weights from `lerobot/pi0_base` with random tensor inputs. It reflects quantization error under real parameter distributions, but does not represent real robot task success rate.
 
-Current run status: skipped real-weight numeric benchmarks.
-
-Reason: full `lerobot/pi0_base` weights are a single 13.04 GiB `model.safetensors`; the download was skipped by the 2 GiB safety limit, so no local tensor keys/modules were available for extraction.
-
-No metrics were fabricated. Re-run Stage 3 with a larger explicit download limit or a local verified checkpoint to enable this stage.
+- device: `cuda`
+- selected tensor file: `results/pi0_module_weights/selected_modules.pt`
+- rows: 70
+- INT8 minimum cosine: 0.994843
+- INT4 minimum cosine: 0.921080
+- All selected weights were already in `[out_dim, in_dim]` layout for `torch.nn.functional.linear`; no transpose was used.
 
 Outputs:
 - `results/csv/pi0_real_weight_quant.csv`
