@@ -32,6 +32,12 @@ SELECTED_KEYS = {
         "paligemma_with_expert.paligemma.model.language_model.layers.9.mlp.up_proj.weight",
         "paligemma_with_expert.paligemma.model.language_model.layers.9.mlp.down_proj.weight",
     ],
+    "action_expert_attention_layer0": [
+        "paligemma_with_expert.gemma_expert.model.layers.0.self_attn.q_proj.weight",
+        "paligemma_with_expert.gemma_expert.model.layers.0.self_attn.k_proj.weight",
+        "paligemma_with_expert.gemma_expert.model.layers.0.self_attn.v_proj.weight",
+        "paligemma_with_expert.gemma_expert.model.layers.0.self_attn.o_proj.weight",
+    ],
     "action_expert_ffn_layer0": [
         "paligemma_with_expert.gemma_expert.model.layers.0.mlp.gate_proj.weight",
         "paligemma_with_expert.gemma_expert.model.layers.0.mlp.up_proj.weight",

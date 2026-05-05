@@ -28,6 +28,12 @@ This report records selected exact key matches. Missing entries are not fabricat
 - selected: `paligemma_with_expert.paligemma.model.language_model.layers.9.mlp.up_proj.weight` shape `[16384, 2048]`
 - selected: `paligemma_with_expert.paligemma.model.language_model.layers.9.mlp.down_proj.weight` shape `[2048, 16384]`
 - extracted tensors: 3
+## action_expert_attention_layer0
+- selected: `paligemma_with_expert.gemma_expert.model.layers.0.self_attn.q_proj.weight` shape `[2048, 1024]`
+- selected: `paligemma_with_expert.gemma_expert.model.layers.0.self_attn.k_proj.weight` shape `[256, 1024]`
+- selected: `paligemma_with_expert.gemma_expert.model.layers.0.self_attn.v_proj.weight` shape `[256, 1024]`
+- selected: `paligemma_with_expert.gemma_expert.model.layers.0.self_attn.o_proj.weight` shape `[1024, 2048]`
+- extracted tensors: 4
 ## action_expert_ffn_layer0
 - selected: `paligemma_with_expert.gemma_expert.model.layers.0.mlp.gate_proj.weight` shape `[4096, 1024]`
 - selected: `paligemma_with_expert.gemma_expert.model.layers.0.mlp.up_proj.weight` shape `[4096, 1024]`

@@ -109,7 +109,7 @@
   - `conda run -n torch python tools/inspect_pi0_checkpoint.py --checkpoint-dir external/pi0_checkpoints/lerobot_pi0_base --out results/pi0_checkpoint_keys.txt`
   - `conda run -n torch python tools/extract_pi0_module_weights.py --checkpoint-dir external/pi0_checkpoints/lerobot_pi0_base --keys-file results/pi0_checkpoint_keys.txt --out-dir results/pi0_module_weights --report results/pi0_extracted_modules.md`
 - outputs: `results/pi0_checkpoint_download_status.md`, `results/pi0_checkpoint_files.txt`, `results/pi0_checkpoint_keys.txt`, `results/pi0_extracted_modules.md`
-- key observations: official openpi documents `gs://openpi-assets/checkpoints/pi0_base`; the verifiable Hugging Face/LeRobot mirror `lerobot/pi0_base` lists a single `model.safetensors` of 13.04 GiB plus small metadata files. After user approval, the full safetensors file was downloaded, 777 checkpoint keys were inspected, and 27 exact-match tensors were extracted for visual projector, VLM attention, VLM FFN, action expert FFN, action projection, and RMSNorm.
+- key observations: official openpi documents `gs://openpi-assets/checkpoints/pi0_base`; the verifiable Hugging Face/LeRobot mirror `lerobot/pi0_base` lists a single `model.safetensors` of 13.04 GiB plus small metadata files. After user approval, the full safetensors file was downloaded, 777 checkpoint keys were inspected, and 31 exact-match tensors were extracted for visual projector, VLM attention, VLM FFN, action expert attention/FFN, action projection, and RMSNorm.
 - issues: the first pass intentionally skipped the large weight file under a 2 GiB safety limit; real-weight experiments were blocked until explicit approval. The extracted tensor bundle is about 898 MB and is intentionally ignored by Git.
 - fixes: added reusable download/inspect/extract tools, exact key selection, and `.gitignore` rules so checkpoint files and extracted `.pt` files are not committed.
 
@@ -123,13 +123,13 @@
 - fixes: used exact extracted weights in `[out_dim, in_dim]` layout with no transpose, generated numeric CSV/figures/summary, and preserved checkpoint/extracted tensors outside Git.
 
 ### pi0 Real-weight Simplification
-- command: `conda run -n torch python pytorch_exp/exp_pi0_real_weight_simplify.py`
+- command: `conda run -n torch python pytorch_exp/exp_pi0_real_weight_simplify.py --device cuda --repeat 5 --warmup 2`
 - result csv: `results/csv/pi0_real_weight_simplify.csv`
 - result figures: `results/figures/pi0_real_weight_simplify_latency.png`, `results/figures/pi0_real_weight_simplify_error.png`
 - summary: `results/pi0_real_weight_simplify_summary.md`
-- key observations: real-weight simplification numeric benchmark was skipped because no verified local pi0 tensor weights were available after Stage 3.
-- issues: missing real FFN/QK/RMSNorm tensors prevented meaningful real-weight activation, softmax, and RMSNorm simplification experiments.
-- fixes: generated explicit skipped-task CSV/figures/summary without fabricating metrics.
+- key observations: real-weight simplification numeric benchmark completed on CUDA for 38 rows. FFN activation replacement is highly sensitive: identity replacement reached relative L2 1.019450, clipped linear GELU about 0.23, PWL GELU about 0.06-0.07, and tanh GELU stayed near exact. Softmax scores were generated from real Q/K weights; `base2_softmax` is nearly exact because the PyTorch implementation uses exact `torch.pow`, while LUT was the best hardware-like approximation by KL in this run. RMSNorm approximations stayed small, with max relative L2 0.011693.
+- issues: `base2_softmax` should be interpreted as a mathematical reformulation baseline unless implemented with an approximate low-cost exp2 unit. The experiment still uses random inputs, not real pi0 activations.
+- fixes: replaced the skipped fallback with real FFN activation, real Q/K softmax, and real RMSNorm scale benchmarks; action expert q/k/v/o tensors were added to the extraction allowlist for action-to-context attention proxy scores.
 
 ### pi0-shape Toy Flow Step Reduction
 - command: `conda run -n torch python pytorch_exp/exp_pi0_shape_flow_step_reduction.py --device cuda --train-steps 1500 --batch-size 128 --eval-repeat 20`
@@ -164,3 +164,11 @@
 - [pi0_real_weight_quant] start device=cuda, selected=results/pi0_module_weights/selected_modules.pt.
 
 - [pi0_real_weight_quant] completed rows=70, csv=results/csv/pi0_real_weight_quant.csv.
+
+- [pi0_real_weight_simplify] start device=cuda, selected=results/pi0_module_weights/selected_modules.pt.
+
+- [pi0_real_weight_simplify] completed rows=38, csv=results/csv/pi0_real_weight_simplify.csv.
+
+- [pi0_real_weight_simplify] start device=cuda, selected=results/pi0_module_weights/selected_modules.pt.
+
+- [pi0_real_weight_simplify] completed rows=38, csv=results/csv/pi0_real_weight_simplify.csv.
