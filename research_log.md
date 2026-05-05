@@ -44,6 +44,7 @@
 - pi0 real-weight quantization commit: `b70ff52`
 - pi0 real-weight simplification commit: `cc902a2`
 - pi0-shape toy flow step reduction commit: `332e762`
+- real-weight final summary commit: `768b0ce`
 
 ## Experiments
 
