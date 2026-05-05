@@ -129,12 +129,31 @@
 - issues: missing real FFN/QK/RMSNorm tensors prevented meaningful real-weight activation, softmax, and RMSNorm simplification experiments.
 - fixes: generated explicit skipped-task CSV/figures/summary without fabricating metrics.
 
+### pi0-shape Toy Flow Step Reduction
+- command: `conda run -n torch python pytorch_exp/exp_pi0_shape_flow_step_reduction.py --device cuda --train-steps 1500 --batch-size 128 --eval-repeat 20`
+- result csv: `results/csv/pi0_shape_flow_step_reduction.csv`
+- result figures: `results/figures/pi0_shape_flow_step_reduction_error.png`, `results/figures/pi0_shape_flow_step_reduction_latency.png`
+- summary: `results/pi0_shape_flow_step_reduction_summary.md`
+- key observations: CUDA run completed 10/8/6/4/2 Euler-step comparison for pi0-like action chunk shape (`horizon=50`, `action_dim=32`, `cond_dim=1024`). 2-step inference was about 4.46x faster than 10-step, with MSE 4.32e-03 vs the 10-step output.
+- issues: first run failed because synthetic condition dimension 1024 was smaller than flattened action dimension 1600; direct reshape was invalid. The toy velocity model remains intentionally small and does not closely reconstruct clean action, so metrics are interpreted only relative to the 10-step toy baseline.
+- fixes: repeated/truncated condition features to synthesize clean actions, increased training from 500 to 1500 steps, and regenerated CSV/figures/summary.
+
 ## Problems and Fixes
 - Initial sandboxed CUDA check: `nvidia-smi` could not communicate with the NVIDIA driver and PyTorch reported CUDA unavailable, so scripts safely fell back to CPU through `resolve_device`.
 - Diagnosis update: the default Codex sandbox did not expose `/dev/nvidia*`, so `nvidia-smi` and PyTorch CUDA failed only inside sandboxed commands. Escalated commands can access the host GPU; all main CSVs and figures were rerun on CUDA afterward.
 - Plotting first wrote PNGs but failed before `summary.md` because `nvidia-smi` returned no captured stderr in the plotting subprocess. Fixed `maybe_nvidia_smi()` to handle empty diagnostics and reran successfully.
 
 ## Final Outputs
-- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`, `results/csv/pi0_aligned_random_quant.csv`, `results/csv/pi0_aligned_random_simplify.csv`, `results/csv/pi0_real_weight_quant.csv`, `results/csv/pi0_real_weight_simplify.csv`
-- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`, `results/figures/pi0_aligned_random_simplify_latency.png`, `results/figures/pi0_aligned_random_simplify_error.png`, `results/figures/pi0_real_weight_quant_latency.png`, `results/figures/pi0_real_weight_quant_error.png`, `results/figures/pi0_real_weight_quant_size.png`, `results/figures/pi0_real_weight_simplify_latency.png`, `results/figures/pi0_real_weight_simplify_error.png`
+- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`, `results/csv/pi0_aligned_random_quant.csv`, `results/csv/pi0_aligned_random_simplify.csv`, `results/csv/pi0_real_weight_quant.csv`, `results/csv/pi0_real_weight_simplify.csv`, `results/csv/pi0_shape_flow_step_reduction.csv`
+- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`, `results/figures/pi0_aligned_random_simplify_latency.png`, `results/figures/pi0_aligned_random_simplify_error.png`, `results/figures/pi0_real_weight_quant_latency.png`, `results/figures/pi0_real_weight_quant_error.png`, `results/figures/pi0_real_weight_quant_size.png`, `results/figures/pi0_real_weight_simplify_latency.png`, `results/figures/pi0_real_weight_simplify_error.png`, `results/figures/pi0_shape_flow_step_reduction_error.png`, `results/figures/pi0_shape_flow_step_reduction_latency.png`
 - summary: `results/summary.md`
+
+- [pi0_shape_flow_step_reduction] start device=cuda, train_steps=500, hidden_dim=512.
+
+- [pi0_shape_flow_step_reduction] start device=cuda, train_steps=500, hidden_dim=512.
+
+- [pi0_shape_flow_step_reduction] completed rows=5, csv=results/csv/pi0_shape_flow_step_reduction.csv.
+
+- [pi0_shape_flow_step_reduction] start device=cuda, train_steps=1500, hidden_dim=512.
+
+- [pi0_shape_flow_step_reduction] completed rows=5, csv=results/csv/pi0_shape_flow_step_reduction.csv.
