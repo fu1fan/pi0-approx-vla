@@ -82,12 +82,21 @@
 - issues: no OOM. Repeat was automatically reduced for larger cases: Linear 4096 used repeat=20, Linear 8192 used repeat=10, Softmax heads=32 seq=1024 used repeat=5. PyTorch fake INT8/INT4 latency includes quantize/dequantize overhead, so it does not represent true hardware INT kernel speed.
 - fixes: logged adaptive repeat reductions and kept all original CSVs untouched.
 
+### pi0-aligned Random Quantization
+- command: `conda run -n torch python pytorch_exp/exp_pi0_aligned_random_quant.py --device cuda --repeat 10 --warmup 3`
+- result csv: `results/csv/pi0_aligned_random_quant.csv`
+- result figures: `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`
+- summary: `results/pi0_aligned_random_quant_summary.md`
+- key observations: CUDA run completed 100 rows across visual projector, Gemma-style q/k/v/o projections, VLM gated FFN, action expert FFN, and action projection modules. INT8 minimum cosine was 0.998402; INT4 weight-only minimum cosine was 0.963150; W4A8 was implemented and produced 20 rows with minimum cosine 0.961928.
+- issues: no OOM. Large FFN and quantized variants used reduced repeat through script policy to keep runtime bounded.
+- fixes: generated separate Stage 1 CSV/figures without replacing previous results.
+
 ## Problems and Fixes
 - Initial sandboxed CUDA check: `nvidia-smi` could not communicate with the NVIDIA driver and PyTorch reported CUDA unavailable, so scripts safely fell back to CPU through `resolve_device`.
 - Diagnosis update: the default Codex sandbox did not expose `/dev/nvidia*`, so `nvidia-smi` and PyTorch CUDA failed only inside sandboxed commands. Escalated commands can access the host GPU; all main CSVs and figures were rerun on CUDA afterward.
 - Plotting first wrote PNGs but failed before `summary.md` because `nvidia-smi` returned no captured stderr in the plotting subprocess. Fixed `maybe_nvidia_smi()` to handle empty diagnostics and reran successfully.
 
 ## Final Outputs
-- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`
-- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`
+- CSV: `results/csv/linear_quant.csv`, `results/csv/projector_quant.csv`, `results/csv/softmax_approx.csv`, `results/csv/gelu_rmsnorm_approx.csv`, `results/csv/toy_flow_matching.csv`, `results/csv/scale_sweep_linear.csv`, `results/csv/scale_sweep_softmax.csv`, `results/csv/pi0_aligned_random_quant.csv`
+- figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`
 - summary: `results/summary.md`
