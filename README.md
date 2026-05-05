@@ -1,6 +1,6 @@
 # pi0-approx-vla
 
-This repository is a module-level experiment workspace for approximate computing in VLA / pi0-style systems. It does not reproduce pi0, download pi0 checkpoints, download large robot datasets, or deploy a full VLA model.
+This repository is a module-level experiment workspace for approximate computing in VLA / pi0-style systems. It does not reproduce pi0, download large robot datasets, or deploy a full VLA model. A verified `lerobot/pi0_base` checkpoint was downloaded only into ignored local cache for module-level real-weight benchmarks; checkpoint files and extracted tensor bundles are not tracked by Git.
 
 The goal is to generate interview-ready evidence with PyTorch experiments and Vitis HLS kernels for modules that appear in VLA pipelines:
 
@@ -64,17 +64,17 @@ Large optional shapes are intentionally gated behind `--include-large` because C
 
 ## Latest PyTorch Benchmark Reports
 
-The current PyTorch side includes both earlier module microbenchmarks and newer pi0-aligned proxy benchmarks:
+The current PyTorch side includes earlier module microbenchmarks, scale sweeps, pi0-aligned random proxy benchmarks, and real pi0 weight + random input module benchmarks:
 
 - Random tensor + pi0-aligned shape quantization: `results/pi0_aligned_random_quant_summary.md`
 - Random tensor + pi0-aligned function simplification: `results/pi0_aligned_random_simplify_summary.md`
 - Real pi0 checkpoint metadata / extraction status: `results/pi0_checkpoint_download_status.md`, `results/pi0_extracted_modules.md`
-- Real pi0 weight + random input quantization status: `results/pi0_real_weight_quant_summary.md`
-- Real pi0 weight + random input simplification status: `results/pi0_real_weight_simplify_summary.md`
+- Real pi0 weight + random input quantization: `results/pi0_real_weight_quant_summary.md`
+- Real pi0 weight + random input simplification: `results/pi0_real_weight_simplify_summary.md`
 - pi0-shape toy flow step reduction: `results/pi0_shape_flow_step_reduction_summary.md`
 - Consolidated report: `results/final_pytorch_benchmark_report.md`
 
-The real-weight stages were not numerically executed in this run because the verified `lerobot/pi0_base` checkpoint exposes a single 13.04 GiB `model.safetensors`, which was intentionally not downloaded under the configured 2 GiB safety limit. No real-weight metrics are fabricated.
+The real-weight stages use extracted module tensors from the verified `lerobot/pi0_base` safetensors checkpoint with random inputs. They reflect real parameter distributions for selected modules, but still do not measure real pi0 robot-task behavior.
 
 ## HLS / Vitis Unified
 

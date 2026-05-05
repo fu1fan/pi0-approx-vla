@@ -37,6 +37,13 @@
 - summary commit: `b1b74e8`
 - toy flow matching commit: `f1274ed`
 - scale sweep benchmark commit: `b48d703`
+- pi0-aligned random quantization commit: `780731e`
+- pi0-aligned random simplification commit: `a8dfb60`
+- pi0 checkpoint utilities commit: `0c0065b`
+- pi0 checkpoint extraction commit: `b86da3a`
+- pi0 real-weight quantization commit: `b70ff52`
+- pi0 real-weight simplification commit: `cc902a2`
+- pi0-shape toy flow step reduction commit: `332e762`
 
 ## Experiments
 
