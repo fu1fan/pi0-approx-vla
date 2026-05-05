@@ -12,3 +12,12 @@ results/tmp/
 .agents/
 .codex/
 .git/
+external/
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.msgpack
+results/pi0_module_weights/
+results/checkpoints/

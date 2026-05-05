@@ -24,6 +24,7 @@
 - [network] Checked HTTP_PROXY / HTTPS_PROXY / ALL_PROXY: all empty.
 - [network] No downloads performed yet; current PyTorch module experiments only need installed local packages.
 - [network] `transformers` and `accelerate` are not installed, but they are not required for these module-level experiments; skipped PyPI access.
+- [network] Stage 3 attempted Hugging Face mirror `https://hf-mirror.com` for `lerobot/pi0_base`. Initial sandbox DNS failed; retried outside sandbox successfully for metadata. Full `model.safetensors` is 13.04 GiB and was skipped by the 2 GiB safety limit.
 
 ## Git
 - note: Git metadata has been migrated back into the project-local `.git/`; normal commands such as `git status` and `git log` now work from the repository root. Earlier commits were temporarily stored in `/tmp/pi0-approx-vla-git` because the Codex sandbox exposed `.git/` as an empty read-only directory.
@@ -99,6 +100,16 @@
 - key observations: CUDA run completed 59 rows covering FFN activation replacement, VLM/action attention softmax approximation, and RMSNorm approximation. Maximum relative L2 by subexperiment was 1.006901 for aggressive FFN activation replacement, 0.702048 for clipped/rough softmax approximations, and 0.011549 for RMSNorm approximations.
 - issues: first run completed compute but failed CSV writing because softmax rows included `kl_divergence` while earlier rows did not. Non-softmax KL was later made explicit as `not_applicable` to avoid NaN-like CSV fields.
 - fixes: updated common CSV writer to union all row fields, regenerated CSV/figures/summary, and verified numeric columns are finite.
+
+### pi0 Checkpoint Download and Extraction Utilities
+- commands:
+  - `conda run -n torch python tools/download_pi0_checkpoint.py --repo-id lerobot/pi0_base --max-download-gb 2.0`
+  - `conda run -n torch python tools/inspect_pi0_checkpoint.py --checkpoint-dir external/pi0_checkpoints/lerobot_pi0_base --out results/pi0_checkpoint_keys.txt`
+  - `conda run -n torch python tools/extract_pi0_module_weights.py --checkpoint-dir external/pi0_checkpoints/lerobot_pi0_base --keys-file results/pi0_checkpoint_keys.txt --out-dir results/pi0_module_weights --report results/pi0_extracted_modules.md`
+- outputs: `results/pi0_checkpoint_download_status.md`, `results/pi0_checkpoint_files.txt`, `results/pi0_checkpoint_keys.txt`, `results/pi0_extracted_modules.md`
+- key observations: official openpi documents `gs://openpi-assets/checkpoints/pi0_base`; the verifiable Hugging Face/LeRobot mirror `lerobot/pi0_base` lists a single `model.safetensors` of 13.04 GiB plus small metadata files. Metadata files were downloaded to ignored external cache, but the full weight tensor file was skipped by the 2 GiB safety limit.
+- issues: no local safetensors/index was available after size-based skip, so `results/pi0_checkpoint_keys.txt` contains no parameter keys and real module extraction was skipped. No unverified third-party weights were used.
+- fixes: added reusable download/inspect/extract tools and `.gitignore` rules so future local full-weight downloads and extracted `.pt` files are not committed.
 
 ## Problems and Fixes
 - Initial sandboxed CUDA check: `nvidia-smi` could not communicate with the NVIDIA driver and PyTorch reported CUDA unavailable, so scripts safely fell back to CPU through `resolve_device`.
