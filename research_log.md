@@ -88,6 +88,18 @@
 - Python golden: `python vitis_workspace/hls_src/lut_softmax/golden_lut_softmax.py` produced matching error trend vs exact float softmax.
 - synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
 
+### PWL GELU HLS Benchmark
+- date: 2026-05-06
+- source: `vitis_workspace/hls_src/gelu_pwl/`
+- Vitis Unified component: `vitis_workspace/gelu_pwl/`
+- top function: `gelu_pwl_kernel`
+- default shape: `len=4096`, with macro support for `GELU_LEN=16384`.
+- approximation: 16 uniform PWL segments over `[-4, 4]`, clamp-to-zero for the far negative tail, identity for the far positive tail.
+- data type: `ap_fixed<16,6>` input/output in HLS, with a float fallback only for local smoke compilation.
+- C++ fallback smoke test: `/tmp/gelu_pwl_tb` passed with `mse=3.988549842798e-05`, `mae=3.169871706350e-03`, `cosine=0.999995103234`, `relative_l2=3.129982371779e-03`, `non_finite=0`.
+- Python golden: `python vitis_workspace/hls_src/gelu_pwl/golden_gelu_pwl.py` matched the same error trend vs exact tanh GELU.
+- synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`

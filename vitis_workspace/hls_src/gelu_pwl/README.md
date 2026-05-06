@@ -1,17 +1,29 @@
-# gelu_pwl
+# PWL GELU HLS Benchmark
 
-Piecewise-linear GELU approximation for a fixed vector.
+This kernel isolates FFN activation approximation for pi0-style VLM and action-expert MLP blocks. It does not replace the full FFN or deploy pi0 end to end.
 
-- Vector length: `VEC_LEN=128`
-- Input and output: `ap_fixed<16,6>`
-- Top function: `gelu_pwl`
-- Approximation behavior:
-  - `x < -3 -> 0`
-  - `x > 3 -> x`
-  - Middle range uses linear segments
+## Default Vector
 
-## Vitis Unified 2025.2
+- Length: `4096`, matching action-expert FFN hidden scale
+- Supported by macro rebuild: `GELU_LEN=16384` for VLM FFN hidden streaming-vector tests
+- Input/output type: `ap_fixed<16,6>`
+- Approximation: 16 uniform PWL segments over `[-4, 4]`
+- Outside range: output `0` for `x <= -4`, identity for `x >= 4`
 
-Create an HLS component, add the source and testbench files in this directory, set top function to `gelu_pwl`, then run C simulation and synthesis.
+## Top Function
 
-The TCL file is retained as a reference for compatible command-line HLS flows.
+`gelu_pwl_kernel`
+
+## Local C++ Smoke Test
+
+```bash
+g++ -std=c++17 -DHLS_NO_AP_FIXED kernel.cpp tb.cpp -o /tmp/gelu_pwl_tb
+/tmp/gelu_pwl_tb
+```
+
+## Vitis Unified Batch Flow
+
+```bash
+cd vitis_workspace/gelu_pwl
+env XILINX_VITIS_DATA_DIR=/tmp/vitis_data v++ --mode hls --config hls_config.cfg
+```
