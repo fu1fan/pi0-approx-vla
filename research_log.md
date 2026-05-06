@@ -57,6 +57,14 @@
 - issue: direct `vitis --version` reports a HOME configuration-space warning even though `df -h` shows sufficient filesystem space.
 - fix / route: set `XILINX_VITIS_DATA_DIR=/tmp/vitis_data` for Vitis Unified commands; use `v++ --mode hls` for batch HLS when possible, and keep classic `run_hls.tcl` files as reproducibility templates.
 
+### Vitis Unified Workspace Config Maintenance
+- date: 2026-05-06
+- outputs: `tools/backup_vitis_workspace_config.py`, `tools/validate_vitis_workspace_config.py`, `tools/update_vitis_workspace_components.py`, `results/hls_workspace_config_report.md`
+- backup: active config files were copied to `vitis_workspace/config_backups/20260506_225000_pre_hls_kernel_edits/` before workspace component edits.
+- JSON policy: no existing Vitis Unified JSON file was manually rewritten; the optional `fixed_projector_tile/vitis-comp.json` was created from the existing component template via Python `json`.
+- validation: `tools/validate_vitis_workspace_config.py --strict` passed for active configs and component recognition checks; `python -m json.tool` passed for each active `vitis-comp.json`.
+- note: the validator was adjusted to accept Vitis-style top-level `key=value` config/INI files and duplicate `_ide/.peers.ini` keys without falsely classifying the workspace as corrupt.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`

@@ -1,0 +1,14 @@
+{
+  "name": "rmsnorm_rsqrt",
+  "type": "HLS",
+  "configuration": {
+    "componentType": "HLS",
+    "configFiles": [
+      "hls_config.cfg"
+    ],
+    "work_dir": "rmsnorm_rsqrt"
+  },
+  "useSysrootToolchain": false,
+  "template": "empty_hls_component",
+  "templateFlow": "VITIS"
+}

@@ -1,0 +1,93 @@
+{
+  "created_at": "2026-05-06T22:49:25",
+  "workspace": "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace",
+  "backup_dir": "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace/config_backups/20260506_225000_pre_hls_kernel_edits",
+  "file_count": 17,
+  "files": [
+    {
+      "path": "_ide/.peers.ini",
+      "sha256": "de7b972373bf4e0ac8c5191b31b31e76de363d2cc80c81b98705b963e4fe92ad",
+      "bytes": "1361"
+    },
+    {
+      "path": "_ide/.wsdata/clang_dir_map.json",
+      "sha256": "8b9a3709f28b6d01b763a28371f1b24b6cc9fc6ec23ce3042b16570d47660bc2",
+      "bytes": "436"
+    },
+    {
+      "path": "_ide/.wsdata/problems_data.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": "2"
+    },
+    {
+      "path": "_ide/settings.json",
+      "sha256": "2a997068a5a962ed332fa89299dfcb205377549f77c56a39089c4876a5be87e9",
+      "bytes": "200"
+    },
+    {
+      "path": "_ide/version.ini",
+      "sha256": "f61c62a77998fc38c1d5db665ab4926d385196948c600fe14a1fba9ae4b4ff74",
+      "bytes": "53"
+    },
+    {
+      "path": "gelu_pwl/compile_commands.json",
+      "sha256": "229e35eb2d1b6d249ef0d5fd80f969e22c0b6b2d154428cd4969ddc1a0c8c408",
+      "bytes": "1089"
+    },
+    {
+      "path": "gelu_pwl/hls_config.cfg",
+      "sha256": "d626836e45ccff9cf3d723f2deaf991d11b5ca4435caa2d7d7d1f19224eb1ace",
+      "bytes": "143"
+    },
+    {
+      "path": "gelu_pwl/vitis-comp.json",
+      "sha256": "548e507ddb8b2abf27391e72e3f385ba6efb54c663f0268340b997e51c4d0d7f",
+      "bytes": "269"
+    },
+    {
+      "path": "int8_gemm/compile_commands.json",
+      "sha256": "ca09a93f54f73df99a35ac28b610d5b7b4ba23cc1e712ca857ee6d13e8184fa4",
+      "bytes": "1095"
+    },
+    {
+      "path": "int8_gemm/hls_config.cfg",
+      "sha256": "d626836e45ccff9cf3d723f2deaf991d11b5ca4435caa2d7d7d1f19224eb1ace",
+      "bytes": "143"
+    },
+    {
+      "path": "int8_gemm/vitis-comp.json",
+      "sha256": "8829512e40a12806a8a8e01f1a8a9022d5d27f94e5f0fc9c025626f9bb943035",
+      "bytes": "271"
+    },
+    {
+      "path": "lut_softmax/compile_commands.json",
+      "sha256": "64b63598e7c22729931e5f2f3f28fa064f24230f0af90ca9517dd687507c43c7",
+      "bytes": "1107"
+    },
+    {
+      "path": "lut_softmax/hls_config.cfg",
+      "sha256": "d626836e45ccff9cf3d723f2deaf991d11b5ca4435caa2d7d7d1f19224eb1ace",
+      "bytes": "143"
+    },
+    {
+      "path": "lut_softmax/vitis-comp.json",
+      "sha256": "849f9c34aa219bb5169a1880448ad7b8732ad6bbf8772e35771aef40c655c2b9",
+      "bytes": "275"
+    },
+    {
+      "path": "rmsnorm_rsqrt/compile_commands.json",
+      "sha256": "823acf9f575c82784d96e0940807862a6173d4835b3cb294efbd90ecc3d58ea8",
+      "bytes": "1119"
+    },
+    {
+      "path": "rmsnorm_rsqrt/hls_config.cfg",
+      "sha256": "d626836e45ccff9cf3d723f2deaf991d11b5ca4435caa2d7d7d1f19224eb1ace",
+      "bytes": "143"
+    },
+    {
+      "path": "rmsnorm_rsqrt/vitis-comp.json",
+      "sha256": "18be9c893747b3be4504cb5a4083335c730b8f1ccf220573fbfa3693c53e584a",
+      "bytes": "279"
+    }
+  ]
+}
