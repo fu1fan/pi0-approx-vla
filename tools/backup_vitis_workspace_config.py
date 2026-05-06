@@ -42,7 +42,7 @@ def is_skipped(path: Path, root: Path) -> bool:
         rel = path.relative_to(root)
     except ValueError:
         return True
-    return any(part in SKIP_DIR_NAMES for part in rel.parts[:-1])
+    return any(part in SKIP_DIR_NAMES or part.endswith("_kernel") for part in rel.parts[:-1])
 
 
 def iter_config_files(root: Path) -> list[Path]:

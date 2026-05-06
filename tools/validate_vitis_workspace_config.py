@@ -42,7 +42,7 @@ def iter_config_files(root: Path, include_backups: bool) -> list[Path]:
             if not path.is_file():
                 continue
             rel = path.relative_to(root)
-            if any(part in skip for part in rel.parts[:-1]):
+            if any(part in skip or part.endswith("_kernel") for part in rel.parts[:-1]):
                 continue
             files.add(path)
     return sorted(files)

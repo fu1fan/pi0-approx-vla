@@ -61,6 +61,7 @@ Large optional shapes are intentionally gated behind `--include-large` because C
 - CSV results: `results/csv/`
 - Figures: `results/figures/`
 - HLS reports copied from Vitis: `results/hls_reports/`
+- HLS kernel summary: `results/hls_kernel_summary.md`, `results/csv/hls_kernel_summary.csv`
 
 ## Latest PyTorch Benchmark Reports
 
@@ -117,6 +118,26 @@ vitis_hls -f run_hls.tcl
 ```
 
 On Vitis Unified-only installs, the TCL files should be treated as source-list and settings templates, not as the primary workflow. Vitis HLS Classic project commands such as `open_project` and `open_solution` are batch-oriented in 2025.1+ and are not the preferred way to create IDE-compatible components.
+
+### Current HLS Kernel Benchmarks
+
+The repository now includes module-level HLS kernels under `vitis_workspace/hls_src/` and matching Vitis Unified component wrappers under `vitis_workspace/<kernel>/`:
+
+- `int8_gemm`: INT8 activation/weight GEMM tile for projector, QKV/O linear, FFN, state/action projection, and action expert MLP.
+- `lut_softmax`: row-wise LUT exp softmax for attention score normalization.
+- `gelu_pwl`: fixed-point PWL GELU for FFN activation.
+- `rmsnorm_rsqrt`: fixed-point RMSNorm with LUT-initialized Newton-Raphson rsqrt.
+- `fixed_projector_tile`: optional fixed-point visual projector tile `[64,1152] -> [64,256]`.
+
+Run the complete local/Vitis flow:
+
+```bash
+python scripts/run_all_hls.py --csim-timeout-sec 240 --synth-timeout-sec 600
+python scripts/parse_hls_reports.py
+python scripts/summarize_hls_results.py
+```
+
+Latest parsed HLS results are in `results/hls_kernel_summary.md`. The HLS layer validates small synthesizable kernels only; it does not deploy full pi0 and does not run end-to-end VLA inference. Flow step reduction remains an algorithm-level PyTorch experiment, not an HLS kernel.
 
 ## Interview Framing
 

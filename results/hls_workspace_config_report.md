@@ -32,6 +32,20 @@ The active workspace now has internally consistent component configs for:
 
 Recognition here means each component has a valid `vitis-comp.json`, the referenced `hls_config.cfg` exists, and the JSON parses successfully. GUI recognition was not manually launched because direct `vitis` writes to the HOME configuration area unless `XILINX_VITIS_DATA_DIR` is overridden.
 
+## Subsequent Component Config Changes
+
+After the initial backup, the active component `hls_config.cfg` files were updated to add the correct `syn.top` entries:
+
+| Component | Config change | Reason |
+| --- | --- | --- |
+| `int8_gemm/hls_config.cfg` | `syn.top=int8_gemm_kernel` | Required for Vitis C-synthesis to bind the top function. |
+| `lut_softmax/hls_config.cfg` | `syn.top=lut_softmax_kernel` | Required for Vitis C-synthesis to bind the top function. |
+| `gelu_pwl/hls_config.cfg` | `syn.top=gelu_pwl_kernel` | Required for Vitis C-synthesis to bind the top function. |
+| `rmsnorm_rsqrt/hls_config.cfg` | `syn.top=rmsnorm_rsqrt_kernel` | Required for Vitis C-synthesis to bind the top function. |
+| `fixed_projector_tile/hls_config.cfg` | `syn.top=fixed_projector_tile_kernel` | Required for Vitis C-synthesis to bind the optional projector top function. |
+
+No existing Vitis Unified JSON schema file was rewritten during these kernel commits. The final validation command `python tools/validate_vitis_workspace_config.py --strict` passed after Vitis-generated `*_kernel/` work directories were excluded from config scans.
+
 ## Validation Summary
 
 | File | Kind | Status | Detail |

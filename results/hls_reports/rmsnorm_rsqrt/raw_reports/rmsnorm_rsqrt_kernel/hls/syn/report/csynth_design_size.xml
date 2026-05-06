@@ -33,8 +33,8 @@
             <header size="7" col0="Function" col1="Location" col2="Compile/Link" col3="Unroll/Inline" col4="Array/Struct" col5="Performance" col6="HW Transforms"/>
             <rows>
                 <row id="0" col0="rmsnorm_rsqrt_kernel" col1="kernel.cpp:41" col2="8341" col3="118" col4="134" col5="127" col6="147">
-                    <row id="1" col0="rsqrt_lut_init" col1="kernel.cpp:13" col2="2941" col3="" col4="" col5="" col6=""/>
-                    <row id="2" col0="nr_rsqrt_step" col1="kernel.cpp:34" col2="3276" col2_disp="3,276 (2 calls)" col3="" col4="" col5="" col6=""/>
+                    <row id="2" col0="rsqrt_lut_init" col1="kernel.cpp:13" col2="2941" col3="" col4="" col5="" col6=""/>
+                    <row id="1" col0="nr_rsqrt_step" col1="kernel.cpp:34" col2="3276" col2_disp="3,276 (2 calls)" col3="" col4="" col5="" col6=""/>
                 </row>
             </rows>
             <notes/>

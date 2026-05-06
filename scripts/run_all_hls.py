@@ -292,7 +292,6 @@ def main() -> int:
             continue
         selected.append(kernel)
 
-    all_status: dict[str, dict] = {}
     for kernel in selected:
         report_dir = args.reports_dir / kernel["kernel"]
         report_dir.mkdir(parents=True, exist_ok=True)
@@ -310,11 +309,18 @@ def main() -> int:
         else:
             status["hls"] = run_hls(kernel, report_dir, args.csim_timeout_sec, args.synth_timeout_sec)
         (report_dir / "run_status.json").write_text(json.dumps(status, indent=2) + "\n", encoding="utf-8")
-        all_status[kernel["kernel"]] = status
         print(
             f"{kernel['kernel']}: local={status['local_csim']['status']} hls={status['hls'].get('synthesis', {}).get('status')}",
             flush=True,
         )
+
+    all_status: dict[str, dict] = {}
+    for status_path in sorted(args.reports_dir.glob("*/run_status.json")):
+        try:
+            status = json.loads(status_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        all_status[status.get("kernel", status_path.parent.name)] = status
 
     args.reports_dir.mkdir(parents=True, exist_ok=True)
     (args.reports_dir / "hls_run_manifest.json").write_text(

@@ -84,7 +84,7 @@
 - top function: `lut_softmax_kernel`
 - default shape: `rows=4`, `len=128`, with macro support for `SOFTMAX_LEN=50/128/256`.
 - approximation: subtract row max, clamp shifted scores to `[-8, 0]`, use 64-entry exp LUT, fixed-point reciprocal normalization.
-- C++ fallback smoke test: `g++ -std=c++17 -DHLS_NO_AP_FIXED ...` then `/tmp/lut_softmax_tb` passed with `mse=3.721743185745e-07`, `mae=2.537906205642e-04`, `kl=6.865745440884e-04`, `cosine=0.999312785598`, `non_finite=0`.
+- C++ fallback smoke test: `g++ -std=c++17 -DHLS_NO_AP_FIXED ...` then `/tmp/lut_softmax_tb` passed with `mse=3.721743185745e-07`, `mae=2.537906205642e-04`, `kl=6.865745440884e-04`, `cosine=0.999312785598`, `relative_l2=3.770584591411e-02`, `non_finite=0`.
 - Python golden: `python vitis_workspace/hls_src/lut_softmax/golden_lut_softmax.py` produced matching error trend vs exact float softmax.
 - synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
 
@@ -130,7 +130,7 @@
 - command: `python scripts/run_all_hls.py --csim-timeout-sec 240 --synth-timeout-sec 600`
 - issue and fix: an initial sandboxed `vitis-run --csim` failed with `exception getting local port: open: Operation not permitted`; reran outside sandbox as required. A first synthesis attempt used `vitis-run --impl`, which requires a prior `syn` work product; corrected automation to use `vitis-run --csim` for C-sim and `v++ --compile --mode hls --config hls_config.cfg` for C-synthesis.
 - result: all five kernels passed Vitis C-sim and v++ HLS C-synthesis. Parser extracted latency, II, estimated clock, LUT, FF, BRAM, DSP, and C-sim error metrics.
-- key rows: INT8 GEMM `latency=1742214`, `II=1742215`, `clock=7.300ns`, `LUT=6953`, `FF=4024`, `BRAM=19`, `DSP=5`, `mse=0`, `cosine=1.0`; LUT Softmax `latency=1867`, `II=1868`, `LUT=3692`, `FF=2727`, `BRAM=9`, `DSP=2`, `KL=1.746e-03`, `cosine=0.999311`; PWL GELU `latency=4114`, `II=4096`, `LUT=2301`, `FF=1806`, `BRAM=1`, `DSP=2`, `relative_l2=3.07e-03`; RMSNorm NR1/NR2 `latency=2080`, `II=2081`, `LUT=5649`, `FF=3857`, `BRAM=2`, `DSP=64`; optional fixed projector tile `latency=37783054`, `II=37783055`, `LUT=5477`, `FF=3510`, `BRAM=19`, `DSP=4`, `relative_l2=8.33e-03`.
+- key rows: INT8 GEMM `latency=1742214`, `II=1742215`, `clock=7.300ns`, `LUT=6953`, `FF=4024`, `BRAM=19`, `DSP=5`, `mse=0`, `cosine=1.0`; LUT Softmax `latency=1867`, `II=1868`, `LUT=3692`, `FF=2727`, `BRAM=9`, `DSP=2`, `KL=1.746e-03`, `cosine=0.999311`, `relative_l2=3.77e-02`; PWL GELU `latency=4114`, `II=4096`, `LUT=2301`, `FF=1806`, `BRAM=1`, `DSP=2`, `relative_l2=3.07e-03`; RMSNorm NR1/NR2 `latency=2080`, `II=2081`, `LUT=5649`, `FF=3857`, `BRAM=2`, `DSP=64`; optional fixed projector tile `latency=37783054`, `II=37783055`, `LUT=5477`, `FF=3510`, `BRAM=19`, `DSP=4`, `relative_l2=8.33e-03`.
 - artifact hygiene: copied only report files and structured run status into `results/hls_reports/`; `.txt` command outputs and Vitis-generated `*_kernel/`, `build/`, `.autopilot`, and `compile_commands.json` are ignored and not intended for commit.
 
 ### Linear Quantization
@@ -243,6 +243,10 @@
 - figures: `results/figures/latency_compare.png`, `results/figures/error_compare.png`, `results/figures/cosine_compare.png`, `results/figures/model_size_compare.png`, `results/figures/toy_flow_matching_curve.png`, `results/figures/scale_sweep_latency.png`, `results/figures/scale_sweep_memory.png`, `results/figures/scale_sweep_error.png`, `results/figures/pi0_aligned_random_quant_latency.png`, `results/figures/pi0_aligned_random_quant_error.png`, `results/figures/pi0_aligned_random_quant_size.png`, `results/figures/pi0_aligned_random_simplify_latency.png`, `results/figures/pi0_aligned_random_simplify_error.png`, `results/figures/pi0_real_weight_quant_latency.png`, `results/figures/pi0_real_weight_quant_error.png`, `results/figures/pi0_real_weight_quant_size.png`, `results/figures/pi0_real_weight_simplify_latency.png`, `results/figures/pi0_real_weight_simplify_error.png`, `results/figures/pi0_shape_flow_step_reduction_error.png`, `results/figures/pi0_shape_flow_step_reduction_latency.png`
 - summary: `results/summary.md`
 - final report: `results/final_pytorch_benchmark_report.md`
+- HLS source: `vitis_workspace/hls_src/int8_gemm/`, `vitis_workspace/hls_src/lut_softmax/`, `vitis_workspace/hls_src/gelu_pwl/`, `vitis_workspace/hls_src/rmsnorm_rsqrt/`, `vitis_workspace/hls_src/fixed_projector_tile/`
+- HLS summary: `results/hls_kernel_summary.md`
+- HLS CSV: `results/csv/hls_kernel_summary.csv`
+- HLS reports: `results/hls_reports/`
 
 - [pi0_shape_flow_step_reduction] start device=cuda, train_steps=500, hidden_dim=512.
 

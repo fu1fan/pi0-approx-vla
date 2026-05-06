@@ -44,6 +44,7 @@ def main() -> int:
         "mae": float(np.mean(np.abs(diff))),
         "kl": float(np.mean(np.sum(exact * np.log((exact + eps) / (approx + eps)), axis=1))),
         "cosine": float(np.dot(exact.ravel(), approx.ravel()) / (np.linalg.norm(exact) * np.linalg.norm(approx) + eps)),
+        "relative_l2": float(np.linalg.norm(diff) / (np.linalg.norm(exact) + eps)),
         "row_sum_max_abs_err": float(np.max(np.abs(np.sum(approx, axis=1) - 1.0))),
         "non_finite": int((~np.isfinite(approx)).sum()),
     }

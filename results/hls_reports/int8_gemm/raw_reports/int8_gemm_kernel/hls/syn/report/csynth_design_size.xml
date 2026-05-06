@@ -33,8 +33,8 @@
             <header size="7" col0="Function" col1="Location" col2="Compile/Link" col3="Unroll/Inline" col4="Array/Struct" col5="Performance" col6="HW Transforms"/>
             <rows>
                 <row id="0" col0="int8_gemm_kernel" col1="kernel.cpp:28" col2="132" col3="84" col4="346" col5="345" col6="366">
-                    <row id="2" col0="requantize_i16" col1="kernel.cpp:14" col2="35" col3="" col4="" col5="" col6="">
-                        <row id="1" col0="saturate_i16" col1="kernel.cpp:3" col2="10" col3="" col4="" col5="" col6=""/>
+                    <row id="1" col0="requantize_i16" col1="kernel.cpp:14" col2="35" col3="" col4="" col5="" col6="">
+                        <row id="2" col0="saturate_i16" col1="kernel.cpp:3" col2="10" col3="" col4="" col5="" col6=""/>
                     </row>
                 </row>
             </rows>

@@ -47,6 +47,7 @@ int main() {
     double dot = 0.0;
     double norm_ref = 0.0;
     double norm_out = 0.0;
+    double diff_norm = 0.0;
     double kl = 0.0;
     double row_sum_max_abs_err = 0.0;
     int non_finite = 0;
@@ -67,6 +68,7 @@ int main() {
             dot += got * ref;
             norm_ref += ref * ref;
             norm_out += got * got;
+            diff_norm += diff * diff;
             kl += ref * std::log((ref + eps) / (got + eps));
             row_sum += got;
         }
@@ -80,9 +82,10 @@ int main() {
     mae /= count;
     kl /= static_cast<double>(SOFTMAX_ROWS);
     const double cosine = dot / (std::sqrt(norm_ref) * std::sqrt(norm_out) + eps);
+    const double rel_l2 = std::sqrt(diff_norm) / (std::sqrt(norm_ref) + eps);
 
     std::printf(
-        "HLS_METRIC kernel=lut_softmax dtype=fixed16x6_prob18x2 shape=rows%d_len%d lut_size=%d clamp_min=-8 clamp_max=0 mse=%.12e mae=%.12e kl=%.12e cosine=%.12f row_sum_max_abs_err=%.12e non_finite=%d\n",
+        "HLS_METRIC kernel=lut_softmax dtype=fixed16x6_prob18x2 shape=rows%d_len%d lut_size=%d clamp_min=-8 clamp_max=0 mse=%.12e mae=%.12e kl=%.12e cosine=%.12f relative_l2=%.12e row_sum_max_abs_err=%.12e non_finite=%d\n",
         SOFTMAX_ROWS,
         SOFTMAX_LEN,
         SOFTMAX_LUT_SIZE,
@@ -90,6 +93,7 @@ int main() {
         mae,
         kl,
         cosine,
+        rel_l2,
         row_sum_max_abs_err,
         non_finite);
     return non_finite == 0 ? 0 : 1;

@@ -4,7 +4,7 @@
 == Synthesis Summary Report of 'rmsnorm_rsqrt_kernel'
 ================================================================
 + General Information: 
-    * Date:           Wed May  6 23:22:07 2026
+    * Date:           Wed May  6 23:30:59 2026
     * Version:        2025.2 (Build 6295257 on Nov 14 2025)
     * Project:        rmsnorm_rsqrt_kernel
     * Solution:       hls (Vivado IP Flow Target)
