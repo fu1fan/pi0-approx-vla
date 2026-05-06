@@ -48,6 +48,15 @@
 
 ## Experiments
 
+### Vitis HLS Workspace and Environment Audit
+- date: 2026-05-06
+- outputs: `results/hls_environment.md`
+- workspace scan: current `vitis_workspace/hls_src/` is absent; Vitis Unified component directories exist for `int8_gemm`, `lut_softmax`, `gelu_pwl`, and `rmsnorm_rsqrt`.
+- config scan: detected component JSON/config files including `vitis-comp.json`, `hls_config.cfg`, and `compile_commands.json` in each component directory, plus `_ide/.wsdata/*.json`, `_ide/*.ini`, and `_ide/settings.json`.
+- tool check: `vitis` and `v++` are available as Vitis 2025.2 / build 6295257; `vitis_hls` is not installed in `PATH`.
+- issue: direct `vitis --version` reports a HOME configuration-space warning even though `df -h` shows sufficient filesystem space.
+- fix / route: set `XILINX_VITIS_DATA_DIR=/tmp/vitis_data` for Vitis Unified commands; use `v++ --mode hls` for batch HLS when possible, and keep classic `run_hls.tcl` files as reproducibility templates.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`
