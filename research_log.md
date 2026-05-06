@@ -77,6 +77,17 @@
 - Python golden: `python vitis_workspace/hls_src/int8_gemm/golden_int8_gemm.py` passed with zero error against the deterministic requantized reference.
 - synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
 
+### LUT Softmax HLS Benchmark
+- date: 2026-05-06
+- source: `vitis_workspace/hls_src/lut_softmax/`
+- Vitis Unified component: `vitis_workspace/lut_softmax/`
+- top function: `lut_softmax_kernel`
+- default shape: `rows=4`, `len=128`, with macro support for `SOFTMAX_LEN=50/128/256`.
+- approximation: subtract row max, clamp shifted scores to `[-8, 0]`, use 64-entry exp LUT, fixed-point reciprocal normalization.
+- C++ fallback smoke test: `g++ -std=c++17 -DHLS_NO_AP_FIXED ...` then `/tmp/lut_softmax_tb` passed with `mse=3.721743185745e-07`, `mae=2.537906205642e-04`, `kl=6.865745440884e-04`, `cosine=0.999312785598`, `non_finite=0`.
+- Python golden: `python vitis_workspace/hls_src/lut_softmax/golden_lut_softmax.py` produced matching error trend vs exact float softmax.
+- synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`

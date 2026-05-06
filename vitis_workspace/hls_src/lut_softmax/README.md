@@ -1,14 +1,30 @@
-# lut_softmax
+# LUT Softmax HLS Benchmark
 
-Vector softmax kernel using max subtraction and a small LUT approximation for `exp`.
+This kernel isolates row-wise attention score normalization for pi0-style VLM and action-expert attention. It does not implement full attention or a full VLA model.
 
-- Vector length: `VEC_LEN=128`
-- Input and output: `ap_fixed<16,6>`
-- Top function: `lut_softmax`
-- The normalization uses `/ sum` directly for clarity. A reciprocal LUT or Newton-Raphson reciprocal is a natural follow-up optimization if division is too costly in synthesis.
+## Default Tile
 
-## Vitis Unified 2025.2
+- Rows: `4`
+- Vector length: `128`
+- Supported by macro rebuild: `SOFTMAX_LEN=50`, `128`, or `256`
+- Input range after max subtraction: clamped to `[-8, 0]`
+- Exp approximation: 64-entry LUT over `[-8, 0]`
+- Output: fixed-point probability type
 
-Create an HLS component, add `lut_softmax.cpp`, `lut_softmax.h`, and `testbench.cpp`, set top function to `lut_softmax`, run C simulation, then synthesis.
+## Top Function
 
-The `run_hls.tcl` file is a reference for users who have a compatible `vitis_hls` command.
+`lut_softmax_kernel`
+
+## Local C++ Smoke Test
+
+```bash
+g++ -std=c++17 -DHLS_NO_AP_FIXED kernel.cpp tb.cpp -o /tmp/lut_softmax_tb
+/tmp/lut_softmax_tb
+```
+
+## Vitis Unified Batch Flow
+
+```bash
+cd vitis_workspace/lut_softmax
+env XILINX_VITIS_DATA_DIR=/tmp/vitis_data v++ --mode hls --config hls_config.cfg
+```
