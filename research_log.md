@@ -65,6 +65,18 @@
 - validation: `tools/validate_vitis_workspace_config.py --strict` passed for active configs and component recognition checks; `python -m json.tool` passed for each active `vitis-comp.json`.
 - note: the validator was adjusted to accept Vitis-style top-level `key=value` config/INI files and duplicate `_ide/.peers.ini` keys without falsely classifying the workspace as corrupt.
 
+### INT8 Tiled GEMM HLS Benchmark
+- date: 2026-05-06
+- source: `vitis_workspace/hls_src/int8_gemm/`
+- Vitis Unified component: `vitis_workspace/int8_gemm/`
+- top function: `int8_gemm_kernel`
+- default shape: `M=50`, `K=32`, `N=1024`, corresponding to pi0-style action projection `[1,50,32] -> [1,50,1024]`.
+- data path: INT8 input/weight, INT32 bias and accumulator, INT16 requantized output.
+- pragmas: AXI master ports, AXI-Lite control, pipelined loops, BRAM accumulator tile, cyclic partition over accumulator tile.
+- C++ smoke test: `g++ -std=c++17 ...` then `/tmp/int8_gemm_tb` passed with `mse=0`, `mae=0`, `cosine=1.0`, `relative_l2=0`, `mismatches=0`.
+- Python golden: `python vitis_workspace/hls_src/int8_gemm/golden_int8_gemm.py` passed with zero error against the deterministic requantized reference.
+- synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`
