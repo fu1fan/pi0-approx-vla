@@ -112,6 +112,17 @@
 - Python golden: `python vitis_workspace/hls_src/rmsnorm_rsqrt/golden_rmsnorm_rsqrt.py` showed the expected NR1 to NR2 error reduction.
 - synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
 
+### Fixed-Point Visual Projector Tile HLS Benchmark
+- date: 2026-05-06
+- source: `vitis_workspace/hls_src/fixed_projector_tile/`
+- Vitis Unified component: `vitis_workspace/fixed_projector_tile/`
+- top function: `fixed_projector_tile_kernel`
+- shape: `tokens=64`, `in_dim=1152`, `out_dim=256`, corresponding to a pi0-style visual projector tile `[64,1152] -> [64,256]`.
+- data type: `ap_fixed<16,6>` input/weight/bias/output and `ap_fixed<40,16>` accumulator in HLS, with a float fallback only for local smoke compilation.
+- C++ fallback smoke test: `/tmp/fixed_projector_tile_tb` passed with `mse=3.089022606486e-15`, `mae=3.896086453821e-08`, `cosine=1.0`, `relative_l2=8.339048847951e-07`, `non_finite=0`.
+- Python golden: `python vitis_workspace/hls_src/fixed_projector_tile/golden_fixed_projector_tile.py` passed.
+- synthesis status: pending unified automation; no latency/resource numbers are claimed yet. This is optional and larger than the four primary kernels, so synthesis may be skipped or fail if runtime/resource limits are tight.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`
