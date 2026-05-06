@@ -123,6 +123,16 @@
 - Python golden: `python vitis_workspace/hls_src/fixed_projector_tile/golden_fixed_projector_tile.py` passed.
 - synthesis status: pending unified automation; no latency/resource numbers are claimed yet. This is optional and larger than the four primary kernels, so synthesis may be skipped or fail if runtime/resource limits are tight.
 
+### HLS Automation and Report Parsing
+- date: 2026-05-06
+- scripts: `scripts/run_all_hls.py`, `scripts/parse_hls_reports.py`, `scripts/summarize_hls_results.py`
+- outputs: `results/csv/hls_kernel_summary.csv`, `results/hls_kernel_summary.md`, `results/hls_reports/`
+- command: `python scripts/run_all_hls.py --csim-timeout-sec 240 --synth-timeout-sec 600`
+- issue and fix: an initial sandboxed `vitis-run --csim` failed with `exception getting local port: open: Operation not permitted`; reran outside sandbox as required. A first synthesis attempt used `vitis-run --impl`, which requires a prior `syn` work product; corrected automation to use `vitis-run --csim` for C-sim and `v++ --compile --mode hls --config hls_config.cfg` for C-synthesis.
+- result: all five kernels passed Vitis C-sim and v++ HLS C-synthesis. Parser extracted latency, II, estimated clock, LUT, FF, BRAM, DSP, and C-sim error metrics.
+- key rows: INT8 GEMM `latency=1742214`, `II=1742215`, `clock=7.300ns`, `LUT=6953`, `FF=4024`, `BRAM=19`, `DSP=5`, `mse=0`, `cosine=1.0`; LUT Softmax `latency=1867`, `II=1868`, `LUT=3692`, `FF=2727`, `BRAM=9`, `DSP=2`, `KL=1.746e-03`, `cosine=0.999311`; PWL GELU `latency=4114`, `II=4096`, `LUT=2301`, `FF=1806`, `BRAM=1`, `DSP=2`, `relative_l2=3.07e-03`; RMSNorm NR1/NR2 `latency=2080`, `II=2081`, `LUT=5649`, `FF=3857`, `BRAM=2`, `DSP=64`; optional fixed projector tile `latency=37783054`, `II=37783055`, `LUT=5477`, `FF=3510`, `BRAM=19`, `DSP=4`, `relative_l2=8.33e-03`.
+- artifact hygiene: copied only report files and structured run status into `results/hls_reports/`; `.txt` command outputs and Vitis-generated `*_kernel/`, `build/`, `.autopilot`, and `compile_commands.json` are ignored and not intended for commit.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`

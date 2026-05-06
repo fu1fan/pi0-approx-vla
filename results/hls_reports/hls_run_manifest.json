@@ -1,0 +1,762 @@
+{
+  "created_at": "2026-05-06T23:22:46",
+  "kernels": {
+    "int8_gemm": {
+      "kernel": "int8_gemm",
+      "shape": "50x32x1024",
+      "dtype": "int8_acc32_out16",
+      "optional": false,
+      "created_at": "2026-05-06T23:20:41",
+      "local_csim": {
+        "status": "passed",
+        "compile_status": "passed",
+        "run_status": "passed",
+        "metrics": [
+          {
+            "kernel": "int8_gemm",
+            "dtype": "int8_acc32_out16",
+            "shape": "50x32x1024",
+            "mse": "0.000000000000e+00",
+            "mae": "0.000000000000e+00",
+            "cosine": "1.000000000000",
+            "relative_l2": "0.000000000000e+00",
+            "mismatches": "0"
+          }
+        ],
+        "output": "local_csim_output.txt"
+      },
+      "python_golden": {
+        "status": "passed",
+        "script": "golden_int8_gemm.py",
+        "metrics": [
+          {
+            "kernel": "int8_gemm",
+            "dtype": "int8_acc32_out16",
+            "shape": "50x32x1024",
+            "mse": 0.0,
+            "mae": 0.0,
+            "cosine": 1.0000000000000002,
+            "relative_l2": 0.0
+          }
+        ],
+        "output": "python_golden_output.txt"
+      },
+      "hls": {
+        "tool": "vitis-run+v++",
+        "csim": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "vitis-run",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg",
+            "--work_dir",
+            "build",
+            "--csim"
+          ],
+          "output": "vitis_csim_output.txt",
+          "metrics": [
+            {
+              "kernel": "int8_gemm",
+              "dtype": "int8_acc32_out16",
+              "shape": "50x32x1024",
+              "mse": "0.000000000000e+00",
+              "mae": "0.000000000000e+00",
+              "cosine": "1.000000000000",
+              "relative_l2": "0.000000000000e+00",
+              "mismatches": "0"
+            }
+          ]
+        },
+        "synthesis": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "v++",
+            "--compile",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg"
+          ],
+          "output": "vitis_synthesis_output.txt"
+        },
+        "copied_reports": [
+          "raw_reports/int8_gemm_kernel/reports/hls_compile.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.sched.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.bind.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.bind.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.bind.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/a.g.ld.0.bc.clang.reflow.diag.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.bind.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.bind.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.sched.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.bind.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/clang.diag.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.sched.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.sched.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.sched.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/main.pp.0.cpp.clang.diag.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.bind.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.sched.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/main.cpp.clang.diag.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.design.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.sched.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/fe_pragma_dump.reflow.0.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.bind.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/be_messages.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.sched.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.bind.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.sched.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.bind.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.sched.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/top-io-fe.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.bind.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/fe_messages.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.sched.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/burst.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.bind.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/design.bindinfo.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.rpt.xml",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.sched.rpt",
+          "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.adb.xml",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_store_loop_csynth.rpt",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/csynth_design_size.rpt",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_store_loop_csynth.xml",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_init_loop_csynth.rpt",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_init_loop_csynth.xml",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/csynth.xml",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_csynth.rpt",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/csynth_design_size.xml",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/csynth.rpt",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_csynth.xml",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_k_loop_n_loop_csynth.rpt",
+          "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_k_loop_n_loop_csynth.xml"
+        ]
+      }
+    },
+    "lut_softmax": {
+      "kernel": "lut_softmax",
+      "shape": "rows4_len128",
+      "dtype": "fixed16x6_prob18x2",
+      "optional": false,
+      "created_at": "2026-05-06T23:21:00",
+      "local_csim": {
+        "status": "passed",
+        "compile_status": "passed",
+        "run_status": "passed",
+        "metrics": [
+          {
+            "kernel": "lut_softmax",
+            "dtype": "fixed16x6_prob18x2",
+            "shape": "rows4_len128",
+            "lut_size": "64",
+            "clamp_min": "-8",
+            "clamp_max": "0",
+            "mse": "3.721743185745e-07",
+            "mae": "2.537906205642e-04",
+            "kl": "6.865745440884e-04",
+            "cosine": "0.999312785598",
+            "row_sum_max_abs_err": "2.100787241943e-07",
+            "non_finite": "0"
+          }
+        ],
+        "output": "local_csim_output.txt"
+      },
+      "python_golden": {
+        "status": "passed",
+        "script": "golden_lut_softmax.py",
+        "metrics": [
+          {
+            "kernel": "lut_softmax",
+            "dtype": "fixed16x6_prob18x2",
+            "shape": "rows4_len128",
+            "lut_size": 64,
+            "clamp": [
+              -8.0,
+              0.0
+            ],
+            "mse": 3.721739286393679e-07,
+            "mae": 0.00025379057774444456,
+            "kl": 0.0006866706057617686,
+            "cosine": 0.9993127856448073,
+            "row_sum_max_abs_err": 1.1102230246251565e-16,
+            "non_finite": 0
+          }
+        ],
+        "output": "python_golden_output.txt"
+      },
+      "hls": {
+        "tool": "vitis-run+v++",
+        "csim": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "vitis-run",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg",
+            "--work_dir",
+            "build",
+            "--csim"
+          ],
+          "output": "vitis_csim_output.txt",
+          "metrics": [
+            {
+              "kernel": "lut_softmax",
+              "dtype": "fixed16x6_prob18x2",
+              "shape": "rows4_len128",
+              "lut_size": "64",
+              "clamp_min": "-8",
+              "clamp_max": "0",
+              "mse": "3.723352544601e-07",
+              "mae": "2.567741628471e-04",
+              "kl": "1.746296664206e-03",
+              "cosine": "0.999311199515",
+              "row_sum_max_abs_err": "1.174926757812e-03",
+              "non_finite": "0"
+            }
+          ]
+        },
+        "synthesis": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "v++",
+            "--compile",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg"
+          ],
+          "output": "vitis_synthesis_output.txt"
+        },
+        "copied_reports": [
+          "raw_reports/lut_softmax_kernel/reports/hls_compile.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.bind.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.verbose.sched.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.bind.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.verbose.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/a.g.ld.0.bc.clang.reflow.diag.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.verbose.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.verbose.bind.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.verbose.sched.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/clang.diag.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.verbose.bind.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.verbose.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.verbose.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.verbose.sched.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.design.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.verbose.bind.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/main.pp.0.cpp.clang.diag.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/main.cpp.clang.diag.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.verbose.bind.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.verbose.sched.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/fe_pragma_dump.reflow.0.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.sched.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.verbose.sched.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.sched.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.verbose.sched.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.verbose.bind.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/be_messages.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.verbose.bind.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.sched.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.verbose.bind.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.verbose.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/top-io-fe.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/fe_messages.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.verbose.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.bind.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/burst.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/design.bindinfo.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.verbose.sched.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.verbose.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.verbose.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel.sched.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_norm_loop.verbose.sched.rpt",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_exp_loop.verbose.bind.rpt.xml",
+          "raw_reports/lut_softmax_kernel/hls/.autopilot/db/lut_softmax_kernel_Pipeline_max_loop.bind.adb.xml",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_Pipeline_norm_loop_csynth.rpt",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/csynth_design_size.rpt",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_Pipeline_exp_loop_csynth.xml",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/csynth.xml",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_csynth.rpt",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/csynth_design_size.xml",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_csynth.xml",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/csynth.rpt",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_Pipeline_exp_loop_csynth.rpt",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_Pipeline_max_loop_csynth.rpt",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_Pipeline_max_loop_csynth.xml",
+          "raw_reports/lut_softmax_kernel/hls/syn/report/lut_softmax_kernel_Pipeline_norm_loop_csynth.xml"
+        ]
+      }
+    },
+    "gelu_pwl": {
+      "kernel": "gelu_pwl",
+      "shape": "len4096",
+      "dtype": "fixed16x6",
+      "optional": false,
+      "created_at": "2026-05-06T23:21:23",
+      "local_csim": {
+        "status": "passed",
+        "compile_status": "passed",
+        "run_status": "passed",
+        "metrics": [
+          {
+            "kernel": "gelu_pwl",
+            "dtype": "fixed16x6",
+            "shape": "len4096",
+            "segments": "16",
+            "range_min": "-4",
+            "range_max": "4",
+            "mse": "3.988549842798e-05",
+            "mae": "3.169871706350e-03",
+            "cosine": "0.999995103234",
+            "relative_l2": "3.129982371779e-03",
+            "non_finite": "0"
+          }
+        ],
+        "output": "local_csim_output.txt"
+      },
+      "python_golden": {
+        "status": "passed",
+        "script": "golden_gelu_pwl.py",
+        "metrics": [
+          {
+            "kernel": "gelu_pwl",
+            "dtype": "fixed16x6",
+            "shape": "len4096",
+            "segments": 16,
+            "range": [
+              -4.0,
+              4.0
+            ],
+            "mse": 3.988551914020311e-05,
+            "mae": 0.0031698686482908457,
+            "cosine": 0.9999951032312667,
+            "relative_l2": 0.003129983184292894,
+            "non_finite": 0
+          }
+        ],
+        "output": "python_golden_output.txt"
+      },
+      "hls": {
+        "tool": "vitis-run+v++",
+        "csim": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "vitis-run",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg",
+            "--work_dir",
+            "build",
+            "--csim"
+          ],
+          "output": "vitis_csim_output.txt",
+          "metrics": [
+            {
+              "kernel": "gelu_pwl",
+              "dtype": "fixed16x6",
+              "shape": "len4096",
+              "segments": "16",
+              "range_min": "-4",
+              "range_max": "4",
+              "mse": "3.836425107314e-05",
+              "mae": "3.405709433815e-03",
+              "cosine": "0.999995307692",
+              "relative_l2": "3.070151235093e-03",
+              "non_finite": "0"
+            }
+          ]
+        },
+        "synthesis": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "v++",
+            "--compile",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg"
+          ],
+          "output": "vitis_synthesis_output.txt"
+        },
+        "copied_reports": [
+          "raw_reports/gelu_pwl_kernel/reports/hls_compile.rpt",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.verbose.rpt.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.design.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/a.g.ld.0.bc.clang.reflow.diag.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.verbose.rpt",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/clang.diag.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.adb.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.bind.adb.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.verbose.bind.rpt.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/main.pp.0.cpp.clang.diag.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/main.cpp.clang.diag.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/fe_pragma_dump.reflow.0.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/be_messages.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.verbose.sched.rpt.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.verbose.bind.rpt",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/top-io-fe.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/fe_messages.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.verbose.sched.rpt",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/burst.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/design.bindinfo.xml",
+          "raw_reports/gelu_pwl_kernel/hls/.autopilot/db/gelu_pwl_kernel.sched.adb.xml",
+          "raw_reports/gelu_pwl_kernel/hls/syn/report/csynth_design_size.rpt",
+          "raw_reports/gelu_pwl_kernel/hls/syn/report/csynth.xml",
+          "raw_reports/gelu_pwl_kernel/hls/syn/report/csynth_design_size.xml",
+          "raw_reports/gelu_pwl_kernel/hls/syn/report/csynth.rpt",
+          "raw_reports/gelu_pwl_kernel/hls/syn/report/gelu_pwl_kernel_csynth.xml",
+          "raw_reports/gelu_pwl_kernel/hls/syn/report/gelu_pwl_kernel_csynth.rpt"
+        ]
+      }
+    },
+    "rmsnorm_rsqrt": {
+      "kernel": "rmsnorm_rsqrt",
+      "shape": "hidden1024",
+      "dtype": "fixed16x6_acc40x16",
+      "optional": false,
+      "created_at": "2026-05-06T23:21:45",
+      "local_csim": {
+        "status": "passed",
+        "compile_status": "passed",
+        "run_status": "passed",
+        "metrics": [
+          {
+            "kernel": "rmsnorm_rsqrt",
+            "variant": "nr1",
+            "dtype": "fixed16x6_acc40x16",
+            "shape": "hidden1024",
+            "rsqrt_lut_size": "32",
+            "mse": "1.137057388778e-08",
+            "mae": "9.262691638356e-05",
+            "cosine": "1.000000000000",
+            "relative_l2": "1.068735115048e-04",
+            "non_finite": "0"
+          },
+          {
+            "kernel": "rmsnorm_rsqrt",
+            "variant": "nr2",
+            "dtype": "fixed16x6_acc40x16",
+            "shape": "hidden1024",
+            "rsqrt_lut_size": "32",
+            "mse": "1.405054561652e-15",
+            "mae": "2.713650828229e-08",
+            "cosine": "1.000000000000",
+            "relative_l2": "3.756864066436e-08",
+            "non_finite": "0"
+          }
+        ],
+        "output": "local_csim_output.txt"
+      },
+      "python_golden": {
+        "status": "passed",
+        "script": "golden_rmsnorm_rsqrt.py",
+        "metrics": [
+          {
+            "kernel": "rmsnorm_rsqrt",
+            "variant": "nr1",
+            "dtype": "fixed16x6_acc40x16",
+            "shape": "hidden1024",
+            "rsqrt_lut_size": 32,
+            "mse": 1.1366025739610977e-08,
+            "mae": 9.260863135997032e-05,
+            "cosine": 0.9999999999999991,
+            "relative_l2": 0.0001068521349574125,
+            "non_finite": 0
+          },
+          {
+            "kernel": "rmsnorm_rsqrt",
+            "variant": "nr2",
+            "dtype": "fixed16x6_acc40x16",
+            "shape": "hidden1024",
+            "rsqrt_lut_size": 32,
+            "mse": 2.9196220012585123e-16,
+            "mae": 1.4842616354664824e-08,
+            "cosine": 0.9999999999999991,
+            "relative_l2": 1.7125458206032406e-08,
+            "non_finite": 0
+          }
+        ],
+        "output": "python_golden_output.txt"
+      },
+      "hls": {
+        "tool": "vitis-run+v++",
+        "csim": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "vitis-run",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg",
+            "--work_dir",
+            "build",
+            "--csim"
+          ],
+          "output": "vitis_csim_output.txt",
+          "metrics": [
+            {
+              "kernel": "rmsnorm_rsqrt",
+              "variant": "nr1",
+              "dtype": "fixed16x6_acc40x16",
+              "shape": "hidden1024",
+              "rsqrt_lut_size": "32",
+              "mse": "2.950255249681e-07",
+              "mae": "4.613765880047e-04",
+              "cosine": "0.999999855028",
+              "relative_l2": "5.446508053096e-04",
+              "non_finite": "0"
+            },
+            {
+              "kernel": "rmsnorm_rsqrt",
+              "variant": "nr2",
+              "dtype": "fixed16x6_acc40x16",
+              "shape": "hidden1024",
+              "rsqrt_lut_size": "32",
+              "mse": "3.014300453104e-07",
+              "mae": "4.730451477809e-04",
+              "cosine": "0.999999848934",
+              "relative_l2": "5.505308032742e-04",
+              "non_finite": "0"
+            }
+          ]
+        },
+        "synthesis": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "v++",
+            "--compile",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg"
+          ],
+          "output": "vitis_synthesis_output.txt"
+        },
+        "copied_reports": [
+          "raw_reports/rmsnorm_rsqrt_kernel/reports/hls_compile.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.verbose.sched.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.sched.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.bind.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.verbose.bind.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.verbose.sched.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/a.g.ld.0.bc.clang.reflow.diag.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.verbose.bind.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/clang.diag.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.sched.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.bind.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.verbose.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.verbose.sched.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.sched.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/main.pp.0.cpp.clang.diag.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.verbose.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/main.cpp.clang.diag.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.verbose.bind.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.bind.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/fe_pragma_dump.reflow.0.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.verbose.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.verbose.bind.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/be_messages.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.verbose.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.verbose.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel.design.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/top-io-fe.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.verbose.bind.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.adb.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/fe_messages.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.verbose.sched.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/burst.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.verbose.sched.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/design.bindinfo.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_sum_loop.verbose.sched.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.verbose.bind.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/.autopilot/db/rmsnorm_rsqrt_kernel_Pipeline_norm_loop.verbose.rpt.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/rmsnorm_rsqrt_kernel_csynth.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/rmsnorm_rsqrt_kernel_Pipeline_sum_loop_csynth.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/csynth_design_size.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/rmsnorm_rsqrt_kernel_Pipeline_norm_loop_csynth.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/csynth.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/csynth_design_size.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/csynth.rpt",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/rmsnorm_rsqrt_kernel_csynth.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/rmsnorm_rsqrt_kernel_Pipeline_sum_loop_csynth.xml",
+          "raw_reports/rmsnorm_rsqrt_kernel/hls/syn/report/rmsnorm_rsqrt_kernel_Pipeline_norm_loop_csynth.xml"
+        ]
+      }
+    },
+    "fixed_projector_tile": {
+      "kernel": "fixed_projector_tile",
+      "shape": "64x1152x256",
+      "dtype": "fixed16x6_acc40x16",
+      "optional": true,
+      "created_at": "2026-05-06T23:22:08",
+      "local_csim": {
+        "status": "passed",
+        "compile_status": "passed",
+        "run_status": "passed",
+        "metrics": [
+          {
+            "kernel": "fixed_projector_tile",
+            "dtype": "fixed16x6_acc40x16",
+            "shape": "64x1152x256",
+            "mse": "3.089022606486e-15",
+            "mae": "3.896086453821e-08",
+            "cosine": "1.000000000000",
+            "relative_l2": "8.339048847951e-07",
+            "non_finite": "0"
+          }
+        ],
+        "output": "local_csim_output.txt"
+      },
+      "python_golden": {
+        "status": "passed",
+        "script": "golden_fixed_projector_tile.py",
+        "metrics": [
+          {
+            "kernel": "fixed_projector_tile",
+            "dtype": "fixed16x6_acc40x16",
+            "shape": "64x1152x256",
+            "mse": 0.0,
+            "mae": 0.0,
+            "cosine": 0.9999999999999866,
+            "relative_l2": 0.0,
+            "non_finite": 0
+          }
+        ],
+        "output": "python_golden_output.txt"
+      },
+      "hls": {
+        "tool": "vitis-run+v++",
+        "csim": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "vitis-run",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg",
+            "--work_dir",
+            "build",
+            "--csim"
+          ],
+          "output": "vitis_csim_output.txt",
+          "metrics": [
+            {
+              "kernel": "fixed_projector_tile",
+              "dtype": "fixed16x6_acc40x16",
+              "shape": "64x1152x256",
+              "mse": "3.178747272625e-07",
+              "mae": "4.883789806627e-04",
+              "cosine": "0.999965279440",
+              "relative_l2": "8.333756462524e-03",
+              "non_finite": "0"
+            }
+          ]
+        },
+        "synthesis": {
+          "status": "passed",
+          "returncode": 0,
+          "command": [
+            "v++",
+            "--compile",
+            "--mode",
+            "hls",
+            "--config",
+            "hls_config.cfg"
+          ],
+          "output": "vitis_synthesis_output.txt"
+        },
+        "copied_reports": [
+          "raw_reports/fixed_projector_tile_kernel/reports/hls_compile.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.bind.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.verbose.bind.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.verbose.sched.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.verbose.bind.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.sched.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.verbose.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/a.g.ld.0.bc.clang.reflow.diag.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.verbose.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.bind.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.verbose.sched.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/clang.diag.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.verbose.sched.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.sched.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.verbose.bind.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.verbose.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/main.pp.0.cpp.clang.diag.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.sched.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.verbose.sched.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/main.cpp.clang.diag.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.bind.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.verbose.bind.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.verbose.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fe_pragma_dump.reflow.0.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.sched.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.verbose.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/be_messages.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.verbose.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.verbose.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.verbose.sched.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.verbose.bind.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.verbose.bind.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.design.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.verbose.sched.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.verbose.sched.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/top-io-fe.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fe_messages.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/burst.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.verbose.sched.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/design.bindinfo.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.bind.adb.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_init_loop.verbose.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_store_loop.verbose.bind.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/.autopilot/db/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop.verbose.bind.rpt.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_csynth.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_csynth.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/csynth_design_size.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_Pipeline_store_loop_csynth.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/csynth.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop_csynth.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/csynth_design_size.xml",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/csynth.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_Pipeline_in_loop_out_loop_csynth.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_Pipeline_init_loop_csynth.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_Pipeline_store_loop_csynth.rpt",
+          "raw_reports/fixed_projector_tile_kernel/hls/syn/report/fixed_projector_tile_kernel_Pipeline_init_loop_csynth.xml"
+        ]
+      }
+    }
+  }
+}

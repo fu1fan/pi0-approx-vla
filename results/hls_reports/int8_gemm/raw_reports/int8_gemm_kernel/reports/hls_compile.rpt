@@ -1,0 +1,267 @@
+
+
+================================================================
+== Synthesis Summary Report of 'int8_gemm_kernel'
+================================================================
++ General Information: 
+    * Date:           Wed May  6 23:20:59 2026
+    * Version:        2025.2 (Build 6295257 on Nov 14 2025)
+    * Project:        int8_gemm_kernel
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcvu9p-flga2104-2-i
+    
+
+* Performance & Resource Estimates: 
++---------------------------------------------+------+---------------+----------+---------+-------+----------+---------+-----------+------+----------+---------+------------+------------+-----+
+|                   Modules                   | Issue|               | Iteration|         |  Trip |          |       Latency       |      |          |         |            |            |     |
+|                   & Loops                   | Type | Violation Type|  Latency | Interval| Count | Pipelined| (cycles)|    (ns)   | Slack|   BRAM   |   DSP   |     FF     |     LUT    | URAM|
++---------------------------------------------+------+---------------+----------+---------+-------+----------+---------+-----------+------+----------+---------+------------+------------+-----+
+|+ int8_gemm_kernel                           |     -|              -|         -|  1742215|      -|        no|  1742214|  1.742e+07|  0.00|  19 (~0%)|  5 (~0%)|  4024 (~0%)|  6953 (~0%)|    -|
+| o row_loop                                  |     -|              -|     34844|        -|     50|        no|  1742200|  1.742e+07|  7.30|         -|        -|           -|           -|    -|
+|  + int8_gemm_kernel_Pipeline_init_loop      |     -|              -|         -|        -|      -|       yes|     1027|  1.027e+04|  0.00|         -|        -|    69 (~0%)|    86 (~0%)|    -|
+|   o init_loop                               |     -|              -|         3|        1|   1024|       yes|     1025|  1.025e+04|  7.30|         -|        -|           -|           -|    -|
+|  + int8_gemm_kernel_Pipeline_k_loop_n_loop  |     -|              -|         -|        -|      -|       yes|    32774|  3.277e+05|  0.00|         -|  1 (~0%)|   388 (~0%)|   324 (~0%)|    -|
+|   o k_loop_n_loop                           |     -|              -|         6|        1|  32768|       yes|    32772|  3.277e+05|  7.30|         -|        -|           -|           -|    -|
+|  + int8_gemm_kernel_Pipeline_store_loop     |     -|              -|         -|        -|      -|       yes|     1028|  1.028e+04|  0.00|         -|  4 (~0%)|   199 (~0%)|   925 (~0%)|    -|
+|   o store_loop                              |     -|              -|         4|        1|   1024|       yes|     1026|  1.026e+04|  7.30|         -|        -|           -|           -|    -|
++---------------------------------------------+------+---------------+----------+---------+-------+----------+---------+-----------+------+----------+---------+------------+------------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* M_AXI
++-------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| Interface   | Read/Write | Data Width | Address Width | Latency | Offset | Register | Max Widen | Max Read     | Max Write    | Num Read    | Num Write   | Resource Estimate |
+|             |            | (SW->HW)   |               |         |        |          | Bitwidth  | Burst Length | Burst Length | Outstanding | Outstanding |                   |
++-------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| m_axi_gmem0 | READ_ONLY  | 8 -> 8     | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          | BRAM=1            |
+| m_axi_gmem1 | READ_ONLY  | 8 -> 8     | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          | BRAM=1            |
+| m_axi_gmem2 | READ_ONLY  | 32 -> 32   | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          | BRAM=1            |
+| m_axi_gmem3 | WRITE_ONLY | 16 -> 16   | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          |                   |
++-------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+
+* S_AXILITE Interfaces
++---------------+------------+---------------+--------+----------+
+| Interface     | Data Width | Address Width | Offset | Register |
++---------------+------------+---------------+--------+----------+
+| s_axi_control | 32         | 7             | 16     | 0        |
++---------------+------------+---------------+--------+----------+
+
+* S_AXILITE Registers
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| Interface     | Register   | Offset | Width | Access | Description                      | Bit Fields                                                           |
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| s_axi_control | CTRL       | 0x00   | 32    | RW     | Control signals                  | 0=AP_START 1=AP_DONE 2=AP_IDLE 3=AP_READY 7=AUTO_RESTART 9=INTERRUPT |
+| s_axi_control | GIER       | 0x04   | 32    | RW     | Global Interrupt Enable Register | 0=Enable                                                             |
+| s_axi_control | IP_IER     | 0x08   | 32    | RW     | IP Interrupt Enable Register     | 0=CHAN0_INT_EN 1=CHAN1_INT_EN                                        |
+| s_axi_control | IP_ISR     | 0x0c   | 32    | RW     | IP Interrupt Status Register     | 0=CHAN0_INT_ST 1=CHAN1_INT_ST                                        |
+| s_axi_control | input_r_1  | 0x10   | 32    | W      | Data signal of input_r           |                                                                      |
+| s_axi_control | input_r_2  | 0x14   | 32    | W      | Data signal of input_r           |                                                                      |
+| s_axi_control | weight_1   | 0x1c   | 32    | W      | Data signal of weight            |                                                                      |
+| s_axi_control | weight_2   | 0x20   | 32    | W      | Data signal of weight            |                                                                      |
+| s_axi_control | bias_1     | 0x28   | 32    | W      | Data signal of bias              |                                                                      |
+| s_axi_control | bias_2     | 0x2c   | 32    | W      | Data signal of bias              |                                                                      |
+| s_axi_control | output_r_1 | 0x34   | 32    | W      | Data signal of output_r          |                                                                      |
+| s_axi_control | output_r_2 | 0x38   | 32    | W      | Data signal of output_r          |                                                                      |
+| s_axi_control | scale_q15  | 0x40   | 32    | W      | Data signal of scale_q15         |                                                                      |
+| s_axi_control | shift      | 0x48   | 32    | W      | Data signal of shift             |                                                                      |
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------+
+| Interface | Type       | Ports     |
++-----------+------------+-----------+
+| ap_clk    | clock      | ap_clk    |
+| ap_rst_n  | reset      | ap_rst_n  |
+| interrupt | interrupt  | interrupt |
+| ap_ctrl   | ap_ctrl_hs |           |
++-----------+------------+-----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++-----------+-----------+---------------------+
+| Argument  | Direction | Datatype            |
++-----------+-----------+---------------------+
+| input     | in        | signed char const * |
+| weight    | in        | signed char const * |
+| bias      | in        | int const *         |
+| output    | out       | short*              |
+| scale_q15 | in        | int                 |
+| shift     | in        | int                 |
++-----------+-----------+---------------------+
+
+* SW-to-HW Mapping
++-----------+---------------+-----------+----------+--------------------------------------+
+| Argument  | HW Interface  | HW Type   | HW Usage | HW Info                              |
++-----------+---------------+-----------+----------+--------------------------------------+
+| input     | m_axi_gmem0   | interface |          | channel=0                            |
+| input     | s_axi_control | register  | offset   | name=input_r_1 offset=0x10 range=32  |
+| input     | s_axi_control | register  | offset   | name=input_r_2 offset=0x14 range=32  |
+| weight    | m_axi_gmem1   | interface |          | channel=0                            |
+| weight    | s_axi_control | register  | offset   | name=weight_1 offset=0x1c range=32   |
+| weight    | s_axi_control | register  | offset   | name=weight_2 offset=0x20 range=32   |
+| bias      | m_axi_gmem2   | interface |          | channel=0                            |
+| bias      | s_axi_control | register  | offset   | name=bias_1 offset=0x28 range=32     |
+| bias      | s_axi_control | register  | offset   | name=bias_2 offset=0x2c range=32     |
+| output    | m_axi_gmem3   | interface |          | channel=0                            |
+| output    | s_axi_control | register  | offset   | name=output_r_1 offset=0x34 range=32 |
+| output    | s_axi_control | register  | offset   | name=output_r_2 offset=0x38 range=32 |
+| scale_q15 | s_axi_control | register  |          | name=scale_q15 offset=0x40 range=32  |
+| shift     | s_axi_control | register  |          | name=shift offset=0x48 range=32      |
++-----------+---------------+-----------+----------+--------------------------------------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+* Inferred Burst Summary
++--------------+-----------+--------+-------+-----------+--------------------------------------+
+| HW Interface | Direction | Length | Width | Loop      | Loop Location                        |
++--------------+-----------+--------+-------+-----------+--------------------------------------+
+| m_axi_gmem0  | read      | 1600   | 8     | row_loop  | ../hls_src/int8_gemm/kernel.cpp:52:5 |
+| m_axi_gmem1  | read      | 32768  | 8     | k_loop    | ../hls_src/int8_gemm/kernel.cpp:60:9 |
+| m_axi_gmem2  | read      | 1024   | 32    | init_loop | ../hls_src/int8_gemm/kernel.cpp:54:9 |
+| m_axi_gmem3  | write     | 51200  | 16    | row_loop  | ../hls_src/int8_gemm/kernel.cpp:52:5 |
++--------------+-----------+--------+-------+-----------+--------------------------------------+
+
+* All M_AXI Variable Accesses
++--------------+----------+---------------------------------------+-----------+--------------+--------+------------+---------------------------------------+------------+-------------------------------------------------------------------------------------------------------+
+| HW Interface | Variable | Access Location                       | Direction | Burst Status | Length | Loop       | Loop Location                         | Resolution | Problem                                                                                               |
++--------------+----------+---------------------------------------+-----------+--------------+--------+------------+---------------------------------------+------------+-------------------------------------------------------------------------------------------------------+
+| m_axi_gmem0  | input    | ../hls_src/int8_gemm/kernel.cpp:61:39 | read      | Widen Fail   |        | k_loop     | ../hls_src/int8_gemm/kernel.cpp:60:9  | 214-353    | Could not widen since type i8 size is greater than or equal to the max_widen_bitwidth threshold of 0  |
+| m_axi_gmem0  | input    | ../hls_src/int8_gemm/kernel.cpp:61:39 | read      | Inferred     | 1600   | row_loop   | ../hls_src/int8_gemm/kernel.cpp:52:5  |            |                                                                                                       |
+| m_axi_gmem1  | weight   | ../hls_src/int8_gemm/kernel.cpp:66:56 | read      | Widen Fail   |        | n_loop     | ../hls_src/int8_gemm/kernel.cpp:63:13 | 214-353    | Could not widen since type i8 size is greater than or equal to the max_widen_bitwidth threshold of 0  |
+| m_axi_gmem1  | weight   | ../hls_src/int8_gemm/kernel.cpp:66:56 | read      | Fail         |        | row_loop   | ../hls_src/int8_gemm/kernel.cpp:52:5  | 214-229    | Could not analyze pattern                                                                             |
+| m_axi_gmem1  | weight   | ../hls_src/int8_gemm/kernel.cpp:66:56 | read      | Inferred     | 32768  | k_loop     | ../hls_src/int8_gemm/kernel.cpp:60:9  |            |                                                                                                       |
+| m_axi_gmem2  | bias     | ../hls_src/int8_gemm/kernel.cpp:56:27 | read      | Widen Fail   |        | init_loop  | ../hls_src/int8_gemm/kernel.cpp:54:9  | 214-353    | Could not widen since type i32 size is greater than or equal to the max_widen_bitwidth threshold of 0 |
+| m_axi_gmem2  | bias     | ../hls_src/int8_gemm/kernel.cpp:56:27 | read      | Fail         |        | row_loop   | ../hls_src/int8_gemm/kernel.cpp:52:5  | 214-229    | Could not analyze pattern                                                                             |
+| m_axi_gmem2  | bias     | ../hls_src/int8_gemm/kernel.cpp:56:27 | read      | Inferred     | 1024   | init_loop  | ../hls_src/int8_gemm/kernel.cpp:54:9  |            |                                                                                                       |
+| m_axi_gmem3  | output   | ../hls_src/int8_gemm/kernel.cpp:73:26 | write     | Widen Fail   |        | store_loop | ../hls_src/int8_gemm/kernel.cpp:71:9  | 214-353    | Could not widen since type i16 size is greater than or equal to the max_widen_bitwidth threshold of 0 |
+| m_axi_gmem3  | output   | ../hls_src/int8_gemm/kernel.cpp:73:26 | write     | Inferred     | 51200  | row_loop   | ../hls_src/int8_gemm/kernel.cpp:52:5  |            |                                                                                                       |
++--------------+----------+---------------------------------------+-----------+--------------+--------+------------+---------------------------------------+------------+-------------------------------------------------------------------------------------------------------+
+
+    * Resolution URL: docs.amd.com/access/sources/dita/topic?Doc_Version=2025.2%20English&url=ug1448-hls-guidance&resourceid=XXX-YYY.html (replace XXX-YYY with column value)
+
+================================================================
+== Bind Op Report
+================================================================
++--------------------------------------------+-----+--------+--------------+-----------+--------------------------+---------+
+| Name                                       | DSP | Pragma | Variable     | Op        | Impl                     | Latency |
++--------------------------------------------+-----+--------+--------------+-----------+--------------------------+---------+
+| + int8_gemm_kernel                         | 5   |        |              |           |                          |         |
+|   icmp_ln17_fu_384_p2                      |     |        | icmp_ln17    | setgt     | auto                     | 0       |
+|   add_ln18_fu_389_p2                       |     |        | add_ln18     | add       | fabric                   | 0       |
+|   shl_ln18_fu_398_p2                       |     |        | shl_ln18     | shl       | auto_pipe                | 0       |
+|   icmp_ln52_fu_431_p2                      |     |        | icmp_ln52    | seteq     | auto                     | 0       |
+|   add_ln52_fu_437_p2                       |     |        | add_ln52     | add       | fabric                   | 0       |
+|  + int8_gemm_kernel_Pipeline_init_loop     | 0   |        |              |           |                          |         |
+|    icmp_ln54_fu_425_p2                     |     |        | icmp_ln54    | seteq     | auto                     | 0       |
+|    add_ln54_fu_431_p2                      |     |        | add_ln54     | add       | fabric                   | 0       |
+|  + int8_gemm_kernel_Pipeline_k_loop_n_loop | 1   |        |              |           |                          |         |
+|    icmp_ln60_fu_465_p2                     |     |        | icmp_ln60    | seteq     | auto                     | 0       |
+|    add_ln60_fu_471_p2                      |     |        | add_ln60     | add       | fabric                   | 0       |
+|    icmp_ln63_fu_492_p2                     |     |        | icmp_ln63    | seteq     | auto                     | 0       |
+|    select_ln60_fu_498_p3                   |     |        | select_ln60  | select    | auto_sel                 | 0       |
+|    first_iter_0_fu_506_p2                  |     |        | first_iter_0 | seteq     | auto                     | 0       |
+|    mac_muladd_8s_8s_32s_32_4_1_U20         | 1   |        | mul_ln65     | mul       | dsp_slice                | 3       |
+|    mac_muladd_8s_8s_32s_32_4_1_U20         | 1   |        | sext_ln65_1  | sext      | dsp_slice                | 3       |
+|    sparsemux_33_4_32_1_1_U19               |     |        | tmp          | sparsemux | compactencoding_dontcare | 0       |
+|    mac_muladd_8s_8s_32s_32_4_1_U20         | 1   |        | add_ln65     | add       | dsp_slice                | 3       |
+|    add_ln63_fu_560_p2                      |     |        | add_ln63     | add       | fabric                   | 0       |
+|  + int8_gemm_kernel_Pipeline_store_loop    | 4   |        |              |           |                          |         |
+|    icmp_ln71_fu_454_p2                     |     |        | icmp_ln71    | seteq     | auto                     | 0       |
+|    add_ln71_fu_460_p2                      |     |        | add_ln71     | add       | fabric                   | 0       |
+|    sparsemux_33_4_32_1_1_U44               |     |        | acc_assign   | sparsemux | compactencoding_dontcare | 0       |
+|    mul_32s_32s_64_1_1_U43                  | 4   |        | scaled       | mul       | auto                     | 0       |
+|    xor_ln19_fu_589_p2                      |     |        | xor_ln19     | xor       | auto                     | 0       |
+|    add_ln20_fu_600_p2                      |     |        | add_ln20     | add       | fabric                   | 0       |
+|    scaled_3_fu_636_p2                      |     |        | scaled_1     | ashr      | auto_pipe                | 0       |
+|    sub_ln22_fu_609_p2                      |     |        | sub_ln22     | sub       | fabric                   | 0       |
+|    ashr_ln22_fu_613_p2                     |     |        | ashr_ln22    | ashr      | auto_pipe                | 0       |
+|    scaled_3_fu_636_p6                      |     |        | scaled_2     | sub       | fabric                   | 0       |
+|    and_ln19_fu_595_p2                      |     |        | and_ln19     | and       | auto                     | 0       |
+|    xor_ln17_fu_624_p2                      |     |        | xor_ln17     | xor       | auto                     | 0       |
+|    sparsemux_7_2_64_1_1_U45                |     |        | scaled_3     | sparsemux | onehotencoding_realdef   | 0       |
+|    icmp_ln5_fu_665_p2                      |     |        | icmp_ln5     | setgt     | auto                     | 0       |
+|    icmp_ln8_fu_671_p2                      |     |        | icmp_ln8     | setlt     | auto                     | 0       |
+|    select_ln5_1_fu_681_p3                  |     |        | select_ln5_1 | select    | auto_sel                 | 0       |
+|    or_ln5_fu_689_p2                        |     |        | or_ln5       | or        | auto                     | 0       |
+|    select_ln5_fu_695_p3                    |     |        | select_ln5   | select    | auto_sel                 | 0       |
++--------------------------------------------+-----+--------+--------------+-----------+--------------------------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
++--------------------+--------------+-----------+------+------+--------+-------------+------+---------+------------------+
+| Name               | Usage        | Type      | BRAM | URAM | Pragma | Variable    | Impl | Latency | Bitwidth, Depth, |
+|                    |              |           |      |      |        |             |      |         | Banks            |
++--------------------+--------------+-----------+------+------+--------+-------------+------+---------+------------------+
+| + int8_gemm_kernel |              |           | 19   | 0    |        |             |      |         |                  |
+|   control_s_axi_U  | interface    | s_axilite |      |      |        |             |      |         |                  |
+|   gmem0_m_axi_U    | interface    | m_axi     | 1    |      |        |             |      |         |                  |
+|   gmem1_m_axi_U    | interface    | m_axi     | 1    |      |        |             |      |         |                  |
+|   gmem2_m_axi_U    | interface    | m_axi     | 1    |      |        |             |      |         |                  |
+|   gmem3_m_axi_U    | interface    | m_axi     |      |      |        |             |      |         |                  |
+|   acc_tile_U       | ram_2p array |           | 1    |      | yes    | acc_tile    | bram | 1       | 32, 64, 1        |
+|   acc_tile_1_U     | ram_2p array |           | 1    |      | yes    | acc_tile_1  | bram | 1       | 32, 64, 1        |
+|   acc_tile_2_U     | ram_2p array |           | 1    |      | yes    | acc_tile_2  | bram | 1       | 32, 64, 1        |
+|   acc_tile_3_U     | ram_2p array |           | 1    |      | yes    | acc_tile_3  | bram | 1       | 32, 64, 1        |
+|   acc_tile_4_U     | ram_2p array |           | 1    |      | yes    | acc_tile_4  | bram | 1       | 32, 64, 1        |
+|   acc_tile_5_U     | ram_2p array |           | 1    |      | yes    | acc_tile_5  | bram | 1       | 32, 64, 1        |
+|   acc_tile_6_U     | ram_2p array |           | 1    |      | yes    | acc_tile_6  | bram | 1       | 32, 64, 1        |
+|   acc_tile_7_U     | ram_2p array |           | 1    |      | yes    | acc_tile_7  | bram | 1       | 32, 64, 1        |
+|   acc_tile_8_U     | ram_2p array |           | 1    |      | yes    | acc_tile_8  | bram | 1       | 32, 64, 1        |
+|   acc_tile_9_U     | ram_2p array |           | 1    |      | yes    | acc_tile_9  | bram | 1       | 32, 64, 1        |
+|   acc_tile_10_U    | ram_2p array |           | 1    |      | yes    | acc_tile_10 | bram | 1       | 32, 64, 1        |
+|   acc_tile_11_U    | ram_2p array |           | 1    |      | yes    | acc_tile_11 | bram | 1       | 32, 64, 1        |
+|   acc_tile_12_U    | ram_2p array |           | 1    |      | yes    | acc_tile_12 | bram | 1       | 32, 64, 1        |
+|   acc_tile_13_U    | ram_2p array |           | 1    |      | yes    | acc_tile_13 | bram | 1       | 32, 64, 1        |
+|   acc_tile_14_U    | ram_2p array |           | 1    |      | yes    | acc_tile_14 | bram | 1       | 32, 64, 1        |
+|   acc_tile_15_U    | ram_2p array |           | 1    |      | yes    | acc_tile_15 | bram | 1       | 32, 64, 1        |
++--------------------+--------------+-----------+------+------+--------+-------------+------+---------+------------------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Inferred Pragmas
++--------------+---------+---------------------------------------------------------------------------------------------------------------+---------------------------------------------+
+| Type         | Options | Location                                                                                                      | Inferred From                               |
++--------------+---------+---------------------------------------------------------------------------------------------------------------+---------------------------------------------+
+| LOOP_FLATTEN |         | loop k_loop (./../hls_src/int8_gemm/kernel.cpp:60:9) in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:60) | pipeline ../hls_src/int8_gemm/kernel.cpp:64 |
++--------------+---------+---------------------------------------------------------------------------------------------------------------+---------------------------------------------+
+
+* Valid Pragma Syntax
++-----------------+-------------------------------------------------------------+----------------------------------------------------------+
+| Type            | Options                                                     | Location                                                 |
++-----------------+-------------------------------------------------------------+----------------------------------------------------------+
+| INLINE          |                                                             | in saturate_i16 (../hls_src/int8_gemm/kernel.cpp:4)      |
+| INLINE          |                                                             | in requantize_i16 (../hls_src/int8_gemm/kernel.cpp:15)   |
+| INTERFACE       | m_axi port=input offset=slave bundle=gmem0 depth=50 * 32    | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:35) |
+| INTERFACE       | m_axi port=weight offset=slave bundle=gmem1 depth=32 * 1024 | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:36) |
+| INTERFACE       | m_axi port=bias offset=slave bundle=gmem2 depth=1024        | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:37) |
+| INTERFACE       | m_axi port=output offset=slave bundle=gmem3 depth=50 * 1024 | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:38) |
+| INTERFACE       | s_axilite port=input bundle=control                         | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:39) |
+| INTERFACE       | s_axilite port=weight bundle=control                        | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:40) |
+| INTERFACE       | s_axilite port=bias bundle=control                          | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:41) |
+| INTERFACE       | s_axilite port=output bundle=control                        | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:42) |
+| INTERFACE       | s_axilite port=scale_q15 bundle=control                     | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:43) |
+| INTERFACE       | s_axilite port=shift bundle=control                         | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:44) |
+| INTERFACE       | s_axilite port=return bundle=control                        | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:45) |
+| BIND_STORAGE    | variable=acc_tile type=ram_2p impl=bram                     | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:48) |
+| ARRAY_PARTITION | variable=acc_tile cyclic factor=16 dim=1                    | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:49) |
+| PIPELINE        | ii=1                                                        | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:55) |
+| PIPELINE        | ii=1                                                        | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:64) |
+| PIPELINE        | ii=1                                                        | in int8_gemm_kernel (../hls_src/int8_gemm/kernel.cpp:72) |
++-----------------+-------------------------------------------------------------+----------------------------------------------------------+
+
+

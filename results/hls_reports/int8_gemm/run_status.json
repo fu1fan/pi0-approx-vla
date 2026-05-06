@@ -1,0 +1,146 @@
+{
+  "kernel": "int8_gemm",
+  "shape": "50x32x1024",
+  "dtype": "int8_acc32_out16",
+  "optional": false,
+  "created_at": "2026-05-06T23:20:41",
+  "local_csim": {
+    "status": "passed",
+    "compile_status": "passed",
+    "run_status": "passed",
+    "metrics": [
+      {
+        "kernel": "int8_gemm",
+        "dtype": "int8_acc32_out16",
+        "shape": "50x32x1024",
+        "mse": "0.000000000000e+00",
+        "mae": "0.000000000000e+00",
+        "cosine": "1.000000000000",
+        "relative_l2": "0.000000000000e+00",
+        "mismatches": "0"
+      }
+    ],
+    "output": "local_csim_output.txt"
+  },
+  "python_golden": {
+    "status": "passed",
+    "script": "golden_int8_gemm.py",
+    "metrics": [
+      {
+        "kernel": "int8_gemm",
+        "dtype": "int8_acc32_out16",
+        "shape": "50x32x1024",
+        "mse": 0.0,
+        "mae": 0.0,
+        "cosine": 1.0000000000000002,
+        "relative_l2": 0.0
+      }
+    ],
+    "output": "python_golden_output.txt"
+  },
+  "hls": {
+    "tool": "vitis-run+v++",
+    "csim": {
+      "status": "passed",
+      "returncode": 0,
+      "command": [
+        "vitis-run",
+        "--mode",
+        "hls",
+        "--config",
+        "hls_config.cfg",
+        "--work_dir",
+        "build",
+        "--csim"
+      ],
+      "output": "vitis_csim_output.txt",
+      "metrics": [
+        {
+          "kernel": "int8_gemm",
+          "dtype": "int8_acc32_out16",
+          "shape": "50x32x1024",
+          "mse": "0.000000000000e+00",
+          "mae": "0.000000000000e+00",
+          "cosine": "1.000000000000",
+          "relative_l2": "0.000000000000e+00",
+          "mismatches": "0"
+        }
+      ]
+    },
+    "synthesis": {
+      "status": "passed",
+      "returncode": 0,
+      "command": [
+        "v++",
+        "--compile",
+        "--mode",
+        "hls",
+        "--config",
+        "hls_config.cfg"
+      ],
+      "output": "vitis_synthesis_output.txt"
+    },
+    "copied_reports": [
+      "raw_reports/int8_gemm_kernel/reports/hls_compile.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.sched.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.bind.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.bind.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.bind.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/a.g.ld.0.bc.clang.reflow.diag.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.bind.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.bind.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.sched.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.bind.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/clang.diag.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.sched.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.sched.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.sched.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/main.pp.0.cpp.clang.diag.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.bind.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.sched.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/main.cpp.clang.diag.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.design.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.sched.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/fe_pragma_dump.reflow.0.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.bind.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/be_messages.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.sched.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.bind.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.sched.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.bind.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_store_loop.verbose.sched.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.verbose.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/top-io-fe.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.bind.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/fe_messages.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_k_loop_n_loop.verbose.sched.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/burst.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.bind.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/design.bindinfo.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.rpt.xml",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.verbose.sched.rpt",
+      "raw_reports/int8_gemm_kernel/hls/.autopilot/db/int8_gemm_kernel_Pipeline_init_loop.adb.xml",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_store_loop_csynth.rpt",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/csynth_design_size.rpt",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_store_loop_csynth.xml",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_init_loop_csynth.rpt",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_init_loop_csynth.xml",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/csynth.xml",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_csynth.rpt",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/csynth_design_size.xml",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/csynth.rpt",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_csynth.xml",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_k_loop_n_loop_csynth.rpt",
+      "raw_reports/int8_gemm_kernel/hls/syn/report/int8_gemm_kernel_Pipeline_k_loop_n_loop_csynth.xml"
+    ]
+  }
+}

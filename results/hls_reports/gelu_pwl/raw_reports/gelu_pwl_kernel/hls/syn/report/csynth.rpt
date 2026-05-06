@@ -1,0 +1,180 @@
+
+
+================================================================
+== Synthesis Summary Report of 'gelu_pwl_kernel'
+================================================================
++ General Information: 
+    * Date:           Wed May  6 23:21:45 2026
+    * Version:        2025.2 (Build 6295257 on Nov 14 2025)
+    * Project:        gelu_pwl_kernel
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcvu9p-flga2104-2-i
+    
+
+* Performance & Resource Estimates: 
++-------------------+------+---------------+----------+---------+------+----------+---------+-----------+------+---------+---------+------------+------------+-----+
+|      Modules      | Issue|               | Iteration|         | Trip |          |       Latency       |      |         |         |            |            |     |
+|      & Loops      | Type | Violation Type|  Latency | Interval| Count| Pipelined| (cycles)|    (ns)   | Slack|  BRAM   |   DSP   |     FF     |     LUT    | URAM|
++-------------------+------+---------------+----------+---------+------+----------+---------+-----------+------+---------+---------+------------+------------+-----+
+|+ gelu_pwl_kernel  |     -|              -|         -|     4096|     -|    rewind|     4114|  4.114e+04|  0.00|  1 (~0%)|  2 (~0%)|  1806 (~0%)|  2303 (~0%)|    -|
+| o vector_loop     |     -|              -|        18|        1|  4096|       yes|     4112|  4.112e+04|  7.30|        -|        -|           -|           -|    -|
++-------------------+------+---------------+----------+---------+------+----------+---------+-----------+------+---------+---------+------------+------------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* M_AXI
++-------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| Interface   | Read/Write | Data Width | Address Width | Latency | Offset | Register | Max Widen | Max Read     | Max Write    | Num Read    | Num Write   | Resource Estimate |
+|             |            | (SW->HW)   |               |         |        |          | Bitwidth  | Burst Length | Burst Length | Outstanding | Outstanding |                   |
++-------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| m_axi_gmem0 | READ_ONLY  | 16 -> 16   | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          | BRAM=1            |
+| m_axi_gmem1 | WRITE_ONLY | 16 -> 16   | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          |                   |
++-------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+
+* S_AXILITE Interfaces
++---------------+------------+---------------+--------+----------+
+| Interface     | Data Width | Address Width | Offset | Register |
++---------------+------------+---------------+--------+----------+
+| s_axi_control | 32         | 6             | 16     | 0        |
++---------------+------------+---------------+--------+----------+
+
+* S_AXILITE Registers
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| Interface     | Register   | Offset | Width | Access | Description                      | Bit Fields                                                           |
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| s_axi_control | CTRL       | 0x00   | 32    | RW     | Control signals                  | 0=AP_START 1=AP_DONE 2=AP_IDLE 3=AP_READY 7=AUTO_RESTART 9=INTERRUPT |
+| s_axi_control | GIER       | 0x04   | 32    | RW     | Global Interrupt Enable Register | 0=Enable                                                             |
+| s_axi_control | IP_IER     | 0x08   | 32    | RW     | IP Interrupt Enable Register     | 0=CHAN0_INT_EN 1=CHAN1_INT_EN                                        |
+| s_axi_control | IP_ISR     | 0x0c   | 32    | RW     | IP Interrupt Status Register     | 0=CHAN0_INT_ST 1=CHAN1_INT_ST                                        |
+| s_axi_control | input_r_1  | 0x10   | 32    | W      | Data signal of input_r           |                                                                      |
+| s_axi_control | input_r_2  | 0x14   | 32    | W      | Data signal of input_r           |                                                                      |
+| s_axi_control | output_r_1 | 0x1c   | 32    | W      | Data signal of output_r          |                                                                      |
+| s_axi_control | output_r_2 | 0x20   | 32    | W      | Data signal of output_r          |                                                                      |
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------+
+| Interface | Type       | Ports     |
++-----------+------------+-----------+
+| ap_clk    | clock      | ap_clk    |
+| ap_rst_n  | reset      | ap_rst_n  |
+| interrupt | interrupt  | interrupt |
+| ap_ctrl   | ap_ctrl_hs |           |
++-----------+------------+-----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+--------------------------------------------------------+
+| Argument | Direction | Datatype                                               |
++----------+-----------+--------------------------------------------------------+
+| input    | in        | ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0> const * |
+| output   | out       | ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>*        |
++----------+-----------+--------------------------------------------------------+
+
+* SW-to-HW Mapping
++----------+---------------+-----------+----------+--------------------------------------+
+| Argument | HW Interface  | HW Type   | HW Usage | HW Info                              |
++----------+---------------+-----------+----------+--------------------------------------+
+| input    | m_axi_gmem0   | interface |          | channel=0                            |
+| input    | s_axi_control | register  | offset   | name=input_r_1 offset=0x10 range=32  |
+| input    | s_axi_control | register  | offset   | name=input_r_2 offset=0x14 range=32  |
+| output   | m_axi_gmem1   | interface |          | channel=0                            |
+| output   | s_axi_control | register  | offset   | name=output_r_1 offset=0x1c range=32 |
+| output   | s_axi_control | register  | offset   | name=output_r_2 offset=0x20 range=32 |
++----------+---------------+-----------+----------+--------------------------------------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+* Inferred Burst Summary
++--------------+-----------+--------+-------+-------------+-------------------------------------+
+| HW Interface | Direction | Length | Width | Loop        | Loop Location                       |
++--------------+-----------+--------+-------+-------------+-------------------------------------+
+| m_axi_gmem0  | read      | 4096   | 16    | vector_loop | ../hls_src/gelu_pwl/kernel.cpp:45:5 |
+| m_axi_gmem1  | write     | 4096   | 16    | vector_loop | ../hls_src/gelu_pwl/kernel.cpp:45:5 |
++--------------+-----------+--------+-------+-------------+-------------------------------------+
+
+* All M_AXI Variable Accesses
++--------------+----------+--------------------------------------+-----------+--------------+--------+-------------+-------------------------------------+------------+-------------------------------------------------------------------------------------------------------+
+| HW Interface | Variable | Access Location                      | Direction | Burst Status | Length | Loop        | Loop Location                       | Resolution | Problem                                                                                               |
++--------------+----------+--------------------------------------+-----------+--------------+--------+-------------+-------------------------------------+------------+-------------------------------------------------------------------------------------------------------+
+| m_axi_gmem0  | input    | ../hls_src/gelu_pwl/kernel.cpp:45:5  | read      | Widen Fail   |        | vector_loop | ../hls_src/gelu_pwl/kernel.cpp:45:5 | 214-353    | Could not widen since type i16 size is greater than or equal to the max_widen_bitwidth threshold of 0 |
+| m_axi_gmem0  | input    | ../hls_src/gelu_pwl/kernel.cpp:45:5  | read      | Inferred     | 4096   | vector_loop | ../hls_src/gelu_pwl/kernel.cpp:45:5 |            |                                                                                                       |
+| m_axi_gmem1  | output   | ../hls_src/gelu_pwl/kernel.cpp:47:19 | write     | Widen Fail   |        | vector_loop | ../hls_src/gelu_pwl/kernel.cpp:45:5 | 214-353    | Could not widen since type i16 size is greater than or equal to the max_widen_bitwidth threshold of 0 |
+| m_axi_gmem1  | output   | ../hls_src/gelu_pwl/kernel.cpp:47:19 | write     | Inferred     | 4096   | vector_loop | ../hls_src/gelu_pwl/kernel.cpp:45:5 |            |                                                                                                       |
++--------------+----------+--------------------------------------+-----------+--------------+--------+-------------+-------------------------------------+------------+-------------------------------------------------------------------------------------------------------+
+
+    * Resolution URL: docs.amd.com/access/sources/dita/topic?Doc_Version=2025.2%20English&url=ug1448-hls-guidance&resourceid=XXX-YYY.html (replace XXX-YYY with column value)
+
+================================================================
+== Bind Op Report
+================================================================
++---------------------------+-----+--------+-------------+-----------+------------------------+---------+
+| Name                      | DSP | Pragma | Variable    | Op        | Impl                   | Latency |
++---------------------------+-----+--------+-------------+-----------+------------------------+---------+
+| + gelu_pwl_kernel         | 2   |        |             |           |                        |         |
+|   icmp_ln12_fu_306_p2     |     |        | icmp_ln12   | setlt     | auto                   | 0       |
+|   icmp_ln15_fu_311_p2     |     |        | icmp_ln15   | setgt     | auto                   | 0       |
+|   scaled_fu_327_p2        |     |        | scaled      | add       | fabric                 | 0       |
+|   icmp_ln22_fu_353_p2     |     |        | icmp_ln22   | setne     | auto                   | 0       |
+|   add_ln22_fu_359_p2      |     |        | add_ln22    | add       | fabric                 | 0       |
+|   select_ln22_fu_365_p3   |     |        | select_ln22 | select    | auto_sel               | 0       |
+|   idx_fu_373_p3           |     |        | idx         | select    | auto_sel               | 0       |
+|   idx_1_fu_393_p3         |     |        | idx_1       | select    | auto_sel               | 0       |
+|   icmp_ln26_fu_415_p2     |     |        | icmp_ln26   | setne     | auto                   | 0       |
+|   idx_2_fu_421_p3         |     |        | idx_2       | select    | auto_sel               | 0       |
+|   frac_fu_445_p2          |     |        | frac        | sub       | fabric                 | 0       |
+|   add_ln31_fu_456_p2      |     |        | add_ln31    | add       | fabric                 | 0       |
+|   sub_ln32_fu_531_p2      |     |        | sub_ln32    | sub       | fabric                 | 0       |
+|   mul_20s_24s_38_1_1_U1   | 2   |        | mul_ln32    | mul       | auto                   | 0       |
+|   add_ln32_fu_558_p2      |     |        | add_ln32    | add       | fabric                 | 0       |
+|   xor_ln12_fu_467_p2      |     |        | xor_ln12    | xor       | auto                   | 0       |
+|   and_ln15_fu_473_p2      |     |        | and_ln15    | and       | auto                   | 0       |
+|   sparsemux_7_2_16_1_1_U2 |     |        | ref_tmp     | sparsemux | onehotencoding_realdef | 0       |
+|   i_2_fu_259_p2           |     |        | i_2         | add       | fabric                 | 0       |
+|   icmp_ln45_fu_265_p2     |     |        | icmp_ln45   | seteq     | auto                   | 0       |
++---------------------------+-----+--------+-------------+-----------+------------------------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
++-------------------+-----------+-----------+------+------+--------+-----------+------+---------+------------------+
+| Name              | Usage     | Type      | BRAM | URAM | Pragma | Variable  | Impl | Latency | Bitwidth, Depth, |
+|                   |           |           |      |      |        |           |      |         | Banks            |
++-------------------+-----------+-----------+------+------+--------+-----------+------+---------+------------------+
+| + gelu_pwl_kernel |           |           | 1    | 0    |        |           |      |         |                  |
+|   control_s_axi_U | interface | s_axilite |      |      |        |           |      |         |                  |
+|   gmem0_m_axi_U   | interface | m_axi     | 1    |      |        |           |      |         |                  |
+|   gmem1_m_axi_U   | interface | m_axi     |      |      |        |           |      |         |                  |
+|   kGeluPwlY_U     | rom_2p    |           |      |      |        | kGeluPwlY | auto | 1       | 13, 17, 1        |
++-------------------+-----------+-----------+------+------+--------+-----------+------+---------+------------------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Valid Pragma Syntax
++-----------+--------------------------------------------------------+--------------------------------------------------------+
+| Type      | Options                                                | Location                                               |
++-----------+--------------------------------------------------------+--------------------------------------------------------+
+| INLINE    |                                                        | in gelu_pwl_scalar (../hls_src/gelu_pwl/kernel.cpp:11) |
+| INTERFACE | m_axi port=input offset=slave bundle=gmem0 depth=4096  | in gelu_pwl_kernel (../hls_src/gelu_pwl/kernel.cpp:38) |
+| INTERFACE | m_axi port=output offset=slave bundle=gmem1 depth=4096 | in gelu_pwl_kernel (../hls_src/gelu_pwl/kernel.cpp:39) |
+| INTERFACE | s_axilite port=input bundle=control                    | in gelu_pwl_kernel (../hls_src/gelu_pwl/kernel.cpp:40) |
+| INTERFACE | s_axilite port=output bundle=control                   | in gelu_pwl_kernel (../hls_src/gelu_pwl/kernel.cpp:41) |
+| INTERFACE | s_axilite port=return bundle=control                   | in gelu_pwl_kernel (../hls_src/gelu_pwl/kernel.cpp:42) |
+| PIPELINE  | ii=1                                                   | in gelu_pwl_kernel (../hls_src/gelu_pwl/kernel.cpp:46) |
++-----------+--------------------------------------------------------+--------------------------------------------------------+
+
+
