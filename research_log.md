@@ -100,6 +100,18 @@
 - Python golden: `python vitis_workspace/hls_src/gelu_pwl/golden_gelu_pwl.py` matched the same error trend vs exact tanh GELU.
 - synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
 
+### RMSNorm Rsqrt HLS Benchmark
+- date: 2026-05-06
+- source: `vitis_workspace/hls_src/rmsnorm_rsqrt/`
+- Vitis Unified component: `vitis_workspace/rmsnorm_rsqrt/`
+- top function: `rmsnorm_rsqrt_kernel`
+- default shape: `hidden=1024`, with macro support for `RMSNORM_HIDDEN=2048`.
+- approximation: 32-entry reciprocal-sqrt LUT over `[0.25, 4.0]`, followed by Newton-Raphson 1-step and 2-step output branches.
+- data type: `ap_fixed<16,6>` input/output and `ap_fixed<40,16>` accumulator in HLS, with a float fallback only for local smoke compilation.
+- C++ fallback smoke test: `/tmp/rmsnorm_rsqrt_tb` passed. NR1 metrics: `mse=1.137057388778e-08`, `mae=9.262691638356e-05`, `cosine=1.0`, `relative_l2=1.068735115048e-04`. NR2 metrics: `mse=1.405054561652e-15`, `mae=2.713650828229e-08`, `cosine=1.0`, `relative_l2=3.756864066436e-08`.
+- Python golden: `python vitis_workspace/hls_src/rmsnorm_rsqrt/golden_rmsnorm_rsqrt.py` showed the expected NR1 to NR2 error reduction.
+- synthesis status: pending unified automation; no latency/resource numbers are claimed yet.
+
 ### Linear Quantization
 - command: `conda run -n torch python pytorch_exp/exp_linear_quant.py --device cuda --repeat 30 --warmup 5`
 - result csv: `results/csv/linear_quant.csv`
