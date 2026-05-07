@@ -14,6 +14,8 @@ from pathlib import Path
 FIELDS = [
     "kernel",
     "variant",
+    "comparison_group",
+    "role",
     "data_type",
     "shape",
     "csim_status",
@@ -35,6 +37,18 @@ FIELDS = [
     "notes",
     "report_path",
 ]
+
+
+KERNEL_METADATA = {
+    "int8_gemm": {"comparison_group": "gemm", "role": "optimized"},
+    "exact_softmax": {"comparison_group": "softmax", "role": "baseline"},
+    "lut_softmax": {"comparison_group": "softmax", "role": "optimized"},
+    "exact_gelu": {"comparison_group": "gelu", "role": "baseline"},
+    "gelu_pwl": {"comparison_group": "gelu", "role": "optimized"},
+    "exact_rmsnorm": {"comparison_group": "rmsnorm", "role": "baseline"},
+    "rmsnorm_rsqrt": {"comparison_group": "rmsnorm", "role": "optimized"},
+    "fixed_projector_tile": {"comparison_group": "projector", "role": "optimized"},
+}
 
 
 def text_or_blank(value: object) -> str:
@@ -117,6 +131,8 @@ def make_rows(reports_dir: Path) -> list[dict[str, str]]:
     for status_path in sorted(reports_dir.glob("*/run_status.json")):
         status = load_status(status_path)
         kernel_dir = status_path.parent
+        kernel_name = status.get("kernel", "")
+        metadata = KERNEL_METADATA.get(kernel_name, {})
         report_values, parse_status, report_path = parse_reports(kernel_dir)
         synth_status = status.get("hls", {}).get("synthesis", {}).get("status", "")
         if synth_status not in {"passed"} and not report_values:
@@ -127,6 +143,10 @@ def make_rows(reports_dir: Path) -> list[dict[str, str]]:
                 {
                     "kernel": status.get("kernel", ""),
                     "variant": text_or_blank(metric.get("variant", "default")),
+                    "comparison_group": text_or_blank(
+                        metric.get("comparison_group", status.get("comparison_group", metadata.get("comparison_group", "")))
+                    ),
+                    "role": text_or_blank(metric.get("role", status.get("role", metadata.get("role", "")))),
                     "data_type": text_or_blank(metric.get("dtype", status.get("dtype", ""))),
                     "shape": text_or_blank(metric.get("shape", status.get("shape", ""))),
                     "csim_status": status.get("local_csim", {}).get("status", ""),

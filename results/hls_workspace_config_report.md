@@ -1,50 +1,42 @@
 # Vitis Workspace Configuration Report
 
-Date: 2026-05-06
+Date: 2026-05-07
 
-## Backup Before Workspace Edits
+## Backup Before Comparison Baseline Edits
 
-- Backup directory: `vitis_workspace/config_backups/20260506_225000_pre_hls_kernel_edits/`
-- Backup manifest: `vitis_workspace/config_backups/20260506_225000_pre_hls_kernel_edits/manifest.json`
-- Backed up active config files before creating the optional `fixed_projector_tile` component config.
-- Backed up file classes: `*.json`, `*.cfg`, `*.ini`, `*.tcl`, and `component.xml` when present.
-- Skipped build/cache/log folders and previous backups.
+- Backup directory: `vitis_workspace/config_backups/20260507_000000_pre_comparison_baselines/`
+- Backup manifest: `vitis_workspace/config_backups/20260507_000000_pre_comparison_baselines/manifest.json`
+- Backed up 25 active Vitis workspace configuration files before adding exact baseline components.
+- File classes covered: `*.json`, `*.cfg`, `*.ini`, `*.tcl`, and `component.xml` when present.
+- Build/cache/log folders and prior backups were skipped by `tools/backup_vitis_workspace_config.py`.
 
 ## Config Files Modified Or Created
 
 | File | Reason | Method | Validation |
 | --- | --- | --- | --- |
-| `vitis_workspace/fixed_projector_tile/vitis-comp.json` | Optional HLS component shell for the fixed-point visual projector tile. | Created by `tools/update_vitis_workspace_components.py` from the existing Vitis component JSON template using Python `json`. | `python -m json.tool` passed; component check passed. |
-| `vitis_workspace/fixed_projector_tile/hls_config.cfg` | Vitis Unified HLS config for the optional component. | Created by `tools/update_vitis_workspace_components.py`; no JSON schema involved. | Config validation passed. |
-| `vitis_workspace/fixed_projector_tile/.gitignore` | Prevent component-local build/cache/log artifacts from being committed. | Created by `tools/update_vitis_workspace_components.py`. | Not a JSON/config schema file. |
+| `vitis_workspace/exact_softmax/vitis-comp.json` | HLS component shell for float exp softmax baseline. | Created by `tools/update_vitis_workspace_components.py` from the existing component template using Python `json`. | JSON parse passed; component check passed. |
+| `vitis_workspace/exact_softmax/hls_config.cfg` | Vitis Unified HLS config with `syn.top=exact_softmax_kernel`. | Created by the updater; no JSON schema involved. | Config validation passed. |
+| `vitis_workspace/exact_gelu/vitis-comp.json` | HLS component shell for float tanh GELU baseline. | Created by `tools/update_vitis_workspace_components.py` from the existing component template using Python `json`. | JSON parse passed; component check passed. |
+| `vitis_workspace/exact_gelu/hls_config.cfg` | Vitis Unified HLS config with `syn.top=exact_gelu_kernel`. | Created by the updater; no JSON schema involved. | Config validation passed. |
+| `vitis_workspace/exact_rmsnorm/vitis-comp.json` | HLS component shell for float sqrt RMSNorm baseline. | Created by `tools/update_vitis_workspace_components.py` from the existing component template using Python `json`. | JSON parse passed; component check passed. |
+| `vitis_workspace/exact_rmsnorm/hls_config.cfg` | Vitis Unified HLS config with `syn.top=exact_rmsnorm_kernel`. | Created by the updater; no JSON schema involved. | Config validation passed. |
 
-No pre-existing Vitis Unified JSON file was rewritten in this stage. Unknown schema fields in existing `vitis-comp.json` files were preserved.
+No pre-existing Vitis Unified JSON schema file was rewritten. The component updater was extended so future component configs include explicit `syn.top` entries while preserving unknown JSON fields.
 
 ## Vitis Unified Recognition
 
 The active workspace now has internally consistent component configs for:
 
 - `int8_gemm`
+- `exact_softmax`
 - `lut_softmax`
+- `exact_gelu`
 - `gelu_pwl`
+- `exact_rmsnorm`
 - `rmsnorm_rsqrt`
 - `fixed_projector_tile`
 
-Recognition here means each component has a valid `vitis-comp.json`, the referenced `hls_config.cfg` exists, and the JSON parses successfully. GUI recognition was not manually launched because direct `vitis` writes to the HOME configuration area unless `XILINX_VITIS_DATA_DIR` is overridden.
-
-## Subsequent Component Config Changes
-
-After the initial backup, the active component `hls_config.cfg` files were updated to add the correct `syn.top` entries:
-
-| Component | Config change | Reason |
-| --- | --- | --- |
-| `int8_gemm/hls_config.cfg` | `syn.top=int8_gemm_kernel` | Required for Vitis C-synthesis to bind the top function. |
-| `lut_softmax/hls_config.cfg` | `syn.top=lut_softmax_kernel` | Required for Vitis C-synthesis to bind the top function. |
-| `gelu_pwl/hls_config.cfg` | `syn.top=gelu_pwl_kernel` | Required for Vitis C-synthesis to bind the top function. |
-| `rmsnorm_rsqrt/hls_config.cfg` | `syn.top=rmsnorm_rsqrt_kernel` | Required for Vitis C-synthesis to bind the top function. |
-| `fixed_projector_tile/hls_config.cfg` | `syn.top=fixed_projector_tile_kernel` | Required for Vitis C-synthesis to bind the optional projector top function. |
-
-No existing Vitis Unified JSON schema file was rewritten during these kernel commits. The final validation command `python tools/validate_vitis_workspace_config.py --strict` passed after Vitis-generated `*_kernel/` work directories were excluded from config scans.
+Recognition here means each component has a valid `vitis-comp.json`, the referenced `hls_config.cfg` exists, and the JSON parses successfully. The validation command used was `python tools/validate_vitis_workspace_config.py --workspace vitis_workspace --report results/hls_workspace_config_report.md --strict`.
 
 ## Validation Summary
 
@@ -55,11 +47,26 @@ No existing Vitis Unified JSON schema file was rewritten during these kernel com
 | `_ide/.wsdata/problems_data.json` | json | ok | valid JSON |
 | `_ide/settings.json` | json | ok | valid JSON |
 | `_ide/version.ini` | ini | ok | configparser accepted file |
+| `exact_gelu/hls_config.cfg` | cfg | ok | configparser accepted file |
+| `exact_gelu/vitis-comp.json` | json | ok | valid JSON |
+| `exact_rmsnorm/hls_config.cfg` | cfg | ok | configparser accepted file |
+| `exact_rmsnorm/vitis-comp.json` | json | ok | valid JSON |
+| `exact_softmax/hls_config.cfg` | cfg | ok | configparser accepted file |
+| `exact_softmax/vitis-comp.json` | json | ok | valid JSON |
+| `fixed_projector_tile/compile_commands.json` | json | ok | valid JSON |
 | `fixed_projector_tile/hls_config.cfg` | cfg | ok | configparser accepted file |
 | `fixed_projector_tile/vitis-comp.json` | json | ok | valid JSON |
 | `gelu_pwl/compile_commands.json` | json | ok | valid JSON |
 | `gelu_pwl/hls_config.cfg` | cfg | ok | configparser accepted file |
 | `gelu_pwl/vitis-comp.json` | json | ok | valid JSON |
+| `hls_src/exact_gelu/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
+| `hls_src/exact_rmsnorm/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
+| `hls_src/exact_softmax/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
+| `hls_src/fixed_projector_tile/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
+| `hls_src/gelu_pwl/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
+| `hls_src/int8_gemm/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
+| `hls_src/lut_softmax/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
+| `hls_src/rmsnorm_rsqrt/run_hls.tcl` | tcl | ok | syntax not parsed; file discovered |
 | `int8_gemm/compile_commands.json` | json | ok | valid JSON |
 | `int8_gemm/hls_config.cfg` | cfg | ok | configparser accepted file |
 | `int8_gemm/vitis-comp.json` | json | ok | valid JSON |
@@ -74,6 +81,9 @@ No existing Vitis Unified JSON schema file was rewritten during these kernel com
 
 | Component Config | Status | Detail |
 | --- | --- | --- |
+| `exact_gelu/vitis-comp.json` | ok | Vitis component config is internally consistent |
+| `exact_rmsnorm/vitis-comp.json` | ok | Vitis component config is internally consistent |
+| `exact_softmax/vitis-comp.json` | ok | Vitis component config is internally consistent |
 | `fixed_projector_tile/vitis-comp.json` | ok | Vitis component config is internally consistent |
 | `gelu_pwl/vitis-comp.json` | ok | Vitis component config is internally consistent |
 | `int8_gemm/vitis-comp.json` | ok | Vitis component config is internally consistent |

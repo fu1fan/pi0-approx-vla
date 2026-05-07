@@ -16,18 +16,36 @@ from pathlib import Path
 DEFAULT_COMPONENTS = (
     "int8_gemm",
     "lut_softmax",
+    "exact_softmax",
     "gelu_pwl",
+    "exact_gelu",
     "rmsnorm_rsqrt",
+    "exact_rmsnorm",
     "fixed_projector_tile",
 )
 
-DEFAULT_CFG = """part=xcvu9p-flga2104-2-i
+TOP_FUNCTIONS = {
+    "int8_gemm": "int8_gemm_kernel",
+    "lut_softmax": "lut_softmax_kernel",
+    "exact_softmax": "exact_softmax_kernel",
+    "gelu_pwl": "gelu_pwl_kernel",
+    "exact_gelu": "exact_gelu_kernel",
+    "rmsnorm_rsqrt": "rmsnorm_rsqrt_kernel",
+    "exact_rmsnorm": "exact_rmsnorm_kernel",
+    "fixed_projector_tile": "fixed_projector_tile_kernel",
+}
+
+
+def default_cfg(name: str) -> str:
+    top = TOP_FUNCTIONS.get(name, f"{name}_kernel")
+    return f"""part=xcvu9p-flga2104-2-i
 
 [hls]
 flow_target=vivado
 package.output.format=ip_catalog
 package.output.syn=false
 syn.file=main.cpp
+syn.top={top}
 tb.file=test.cpp
 """
 
@@ -98,7 +116,7 @@ def main() -> int:
 
         cfg = comp_dir / "hls_config.cfg"
         if args.refresh_existing or not cfg.exists():
-            cfg.write_text(DEFAULT_CFG, encoding="utf-8")
+            cfg.write_text(default_cfg(name), encoding="utf-8")
             changed.append(cfg.relative_to(workspace).as_posix())
 
         gitignore = comp_dir / ".gitignore"

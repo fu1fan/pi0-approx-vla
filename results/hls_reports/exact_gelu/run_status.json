@@ -1,0 +1,103 @@
+{
+  "kernel": "exact_gelu",
+  "shape": "len4096",
+  "dtype": "float32",
+  "comparison_group": "gelu",
+  "role": "baseline",
+  "optional": false,
+  "created_at": "2026-05-07T00:20:32",
+  "local_csim": {
+    "status": "passed",
+    "compile_status": "passed",
+    "run_status": "passed",
+    "metrics": [
+      {
+        "kernel": "exact_gelu",
+        "variant": "tanh",
+        "dtype": "float32",
+        "shape": "len4096",
+        "mse": "5.663074350383e-15",
+        "mae": "4.568548955064e-08",
+        "cosine": "1.000000000000",
+        "relative_l2": "3.729585017692e-08",
+        "non_finite": "0"
+      }
+    ],
+    "output": "local_csim_output.txt"
+  },
+  "python_golden": {
+    "status": "passed",
+    "script": "golden_exact_gelu.py",
+    "metrics": [
+      {
+        "kernel": "exact_gelu",
+        "variant": "tanh",
+        "dtype": "float32",
+        "shape": "len4096",
+        "mse": 2.930240078881466e-15,
+        "mae": 2.7999901539570904e-08,
+        "cosine": 1.0000000074085817,
+        "relative_l2": 2.682785694658196e-08,
+        "non_finite": 0
+      }
+    ],
+    "output": "python_golden_output.txt"
+  },
+  "hls": {
+    "tool": "vitis-run+v++",
+    "csim": {
+      "status": "passed",
+      "returncode": 0,
+      "command": [
+        "vitis-run",
+        "--mode",
+        "hls",
+        "--config",
+        "hls_config.cfg",
+        "--work_dir",
+        "build",
+        "--csim"
+      ],
+      "output": "vitis_csim_output.txt",
+      "metrics": [
+        {
+          "kernel": "exact_gelu",
+          "variant": "tanh",
+          "dtype": "float32",
+          "shape": "len4096",
+          "mse": "5.657816161014e-15",
+          "mae": "4.558468581405e-08",
+          "cosine": "1.000000000000",
+          "relative_l2": "3.727853147564e-08",
+          "non_finite": "0"
+        }
+      ]
+    },
+    "synthesis": {
+      "status": "passed",
+      "returncode": 0,
+      "command": [
+        "v++",
+        "--compile",
+        "--mode",
+        "hls",
+        "--config",
+        "hls_config.cfg"
+      ],
+      "output": "vitis_synthesis_output.txt"
+    },
+    "copied_reports": [
+      "raw_reports/exact_gelu_kernel/reports/hls_compile.rpt",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/exact_gelu_kernel_csynth.rpt",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/csynth_design_size.rpt",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/csynth.xml",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/exp_generic_double_s_csynth.xml",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/csynth_design_size.xml",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/generic_tanh_float_s_csynth.xml",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/csynth.rpt",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/generic_tanh_float_s_csynth.rpt",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/exp_generic_double_s_csynth.rpt",
+      "raw_reports/exact_gelu_kernel/hls/syn/report/exact_gelu_kernel_csynth.xml"
+    ]
+  }
+}

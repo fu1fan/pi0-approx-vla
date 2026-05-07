@@ -20,6 +20,7 @@
 - Real pi0 weight + random input simplification
 - pi0-shape toy flow step reduction
 - Vitis HLS module-level kernel benchmarks: INT8 GEMM, LUT softmax, PWL GELU, RMSNorm rsqrt, and optional fixed-point visual projector tile
+- Vitis HLS before/after comparison baselines: exact softmax, exact GELU, and exact RMSNorm versus the approximate kernels
 
 ## CSV Outputs
 - `results/csv/linear_quant.csv`
@@ -35,6 +36,7 @@
 - `results/csv/pi0_real_weight_simplify.csv`
 - `results/csv/pi0_shape_flow_step_reduction.csv`
 - `results/csv/hls_kernel_summary.csv`
+- `results/csv/hls_optimization_comparison.csv`
 
 ## Figures
 - `results/figures/latency_compare.png`
@@ -62,7 +64,8 @@
 - Scale sweep memory: largest Linear shape shows FP32 256 MB vs INT8 64 MB vs INT4 32 MB estimated weight storage.
 - pi0 real-weight quantization: INT8 minimum cosine 0.994843 across selected real-weight modules, while INT4 weight-only minimum cosine drops to 0.921080.
 - pi0-shape toy flow: reducing Euler integration from 10 to 2 steps gives about 4.46x latency speedup vs the 10-step toy baseline, with MSE 4.32e-03 relative to that baseline.
-- HLS kernel verification: all five tile-level kernels passed Vitis C-sim and v++ C-synthesis on Vitis 2025.2. INT8 GEMM synthesized with 1,742,214 latency cycles, 7.300 ns estimated clock, 6,953 LUT, 4,024 FF, 19 BRAM, and 5 DSP. LUT softmax synthesized with 1,867 latency cycles, KL 1.746e-03, cosine 0.999311, and relative L2 3.77e-02 vs exact softmax. PWL GELU synthesized with 4,114 latency cycles and relative L2 3.07e-03. RMSNorm rsqrt synthesized with 2,080 latency cycles and cosine above 0.9999998 for both NR branches.
+- HLS kernel verification: all five original tile-level kernels and three exact baseline kernels passed Vitis C-sim and v++ C-synthesis on Vitis 2025.2. INT8 GEMM synthesized with 1,742,214 latency cycles, 7.300 ns estimated clock, 6,953 LUT, 4,024 FF, 19 BRAM, and 5 DSP. LUT softmax synthesized with 1,867 latency cycles, KL 1.746e-03, cosine 0.999311, and relative L2 3.77e-02 vs exact softmax. PWL GELU synthesized with 4,114 latency cycles and relative L2 3.07e-03. RMSNorm rsqrt synthesized with 2,080 latency cycles and cosine above 0.9999998 for both NR branches.
+- HLS before/after comparison: LUT softmax reduced DSP by 85.7% and improved estimated time by 1.92x versus float exp softmax, although its cycle count increased by 8.1%. PWL GELU reduced LUT by 70.7%, FF by 77.6%, BRAM by 83.3%, and DSP by 96.7% versus float tanh GELU, with 1.01x estimated-time speedup. RMSNorm rsqrt improved estimated time by 2.09x versus float sqrt RMSNorm, but used more LUT (+54.5%) and DSP (+540%) in the current implementation.
 
 ## Current Conclusions
 - INT8 is the best-supported quantization target for Linear/projector/GEMM-like modules. It stays high-cosine in generic, scale-sweep, pi0-aligned random, and real-weight random-input tests.
@@ -73,6 +76,7 @@
 - These results are module-level proxy benchmarks. They do not estimate real pi0 robot task success, because no real observation / activation / action dataset is used.
 - The Vitis HLS results are also module-level only. They validate small kernel/tile implementability, latency, II, Fmax estimate, and resources; they do not represent a full pi0 FPGA deployment.
 - PyTorch experiments remain the source for real-weight/random-input approximation trends. HLS experiments provide hardware feasibility evidence for the same module classes.
+- The HLS before/after results show mixed optimization tradeoffs: nonlinear exp/tanh replacement is clearly resource-beneficial for softmax/GELU, while the current RMSNorm rsqrt path mainly improves estimated clock/time and should be refined if DSP is the primary FPGA constraint.
 
 ## Scale Sweep Findings
 - Linear scale sweep covered up to `batch=1,seq=128,in=8192,out=8192` on CUDA.

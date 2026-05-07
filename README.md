@@ -62,6 +62,7 @@ Large optional shapes are intentionally gated behind `--include-large` because C
 - Figures: `results/figures/`
 - HLS reports copied from Vitis: `results/hls_reports/`
 - HLS kernel summary: `results/hls_kernel_summary.md`, `results/csv/hls_kernel_summary.csv`
+- HLS before/after comparison: `results/hls_optimization_comparison.md`, `results/csv/hls_optimization_comparison.csv`
 
 ## Latest PyTorch Benchmark Reports
 
@@ -124,8 +125,11 @@ On Vitis Unified-only installs, the TCL files should be treated as source-list a
 The repository now includes module-level HLS kernels under `vitis_workspace/hls_src/` and matching Vitis Unified component wrappers under `vitis_workspace/<kernel>/`:
 
 - `int8_gemm`: INT8 activation/weight GEMM tile for projector, QKV/O linear, FFN, state/action projection, and action expert MLP.
+- `exact_softmax`: float exp softmax baseline for before/after comparison.
 - `lut_softmax`: row-wise LUT exp softmax for attention score normalization.
+- `exact_gelu`: float tanh GELU baseline for before/after comparison.
 - `gelu_pwl`: fixed-point PWL GELU for FFN activation.
+- `exact_rmsnorm`: float sqrt RMSNorm baseline for before/after comparison.
 - `rmsnorm_rsqrt`: fixed-point RMSNorm with LUT-initialized Newton-Raphson rsqrt.
 - `fixed_projector_tile`: optional fixed-point visual projector tile `[64,1152] -> [64,256]`.
 
@@ -135,9 +139,10 @@ Run the complete local/Vitis flow:
 python scripts/run_all_hls.py --csim-timeout-sec 240 --synth-timeout-sec 600
 python scripts/parse_hls_reports.py
 python scripts/summarize_hls_results.py
+python scripts/summarize_hls_comparison.py
 ```
 
-Latest parsed HLS results are in `results/hls_kernel_summary.md`. The HLS layer validates small synthesizable kernels only; it does not deploy full pi0 and does not run end-to-end VLA inference. Flow step reduction remains an algorithm-level PyTorch experiment, not an HLS kernel.
+Latest parsed HLS results are in `results/hls_kernel_summary.md`; optimization-before/after pairs are in `results/hls_optimization_comparison.md`. The HLS layer validates small synthesizable kernels only; it does not deploy full pi0 and does not run end-to-end VLA inference. Flow step reduction remains an algorithm-level PyTorch experiment, not an HLS kernel.
 
 ## Interview Framing
 

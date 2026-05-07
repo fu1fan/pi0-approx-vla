@@ -1,0 +1,15 @@
+{
+  "workspaceRoot": "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace",
+  "mapping": {
+    "gelu_pwl/test.cpp": "gelu_pwl",
+    "lut_softmax/main.cpp": "lut_softmax",
+    "int8_gemm/test.cpp": "int8_gemm",
+    "fixed_projector_tile/main.cpp": "fixed_projector_tile",
+    "gelu_pwl/main.cpp": "gelu_pwl",
+    "int8_gemm/main.cpp": "int8_gemm",
+    "fixed_projector_tile/test.cpp": "fixed_projector_tile",
+    "lut_softmax/test.cpp": "lut_softmax",
+    "rmsnorm_rsqrt/main.cpp": "rmsnorm_rsqrt",
+    "rmsnorm_rsqrt/test.cpp": "rmsnorm_rsqrt"
+  }
+}

@@ -1,0 +1,6 @@
+/build
+/export
+/.cache
+*.log
+*.jou
+*.wdb

@@ -1,0 +1,27 @@
+[
+  {
+    "directory": "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace/lut_softmax",
+    "arguments": [
+      "/opt/Xilinx/2025.2/Vitis/lnx64/tools/vcxx/libexec/clang++",
+      "--gcc-toolchain=/opt/Xilinx/2025.2/Vitis/tps/lnx64/gcc-8.3.0",
+      "-fhls",
+      "-hls-syn-headers-dir=/opt/Xilinx/2025.2/Vitis/common/technology/autopilot",
+      "-fhlstoplevel=lut_softmax_kernel",
+      "-c",
+      "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace/lut_softmax/main.cpp"
+    ],
+    "file": "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace/lut_softmax/main.cpp"
+  },
+  {
+    "directory": "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace/lut_softmax",
+    "arguments": [
+      "/opt/Xilinx/2025.2/Vitis/lnx64/tools/vcxx/libexec/clang++",
+      "--gcc-toolchain=/opt/Xilinx/2025.2/Vitis/tps/lnx64/gcc-8.3.0",
+      "-fhls-tb",
+      "-hls-sim-headers-dir=/opt/Xilinx/2025.2/Vitis/include",
+      "-c",
+      "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace/lut_softmax/test.cpp"
+    ],
+    "file": "/home/fu1fan/Develop/PROJECTS/pi0-approx-vla/vitis_workspace/lut_softmax/test.cpp"
+  }
+]

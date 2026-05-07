@@ -266,6 +266,25 @@
 
 - [pi0_real_weight_simplify] completed rows=38, csv=results/csv/pi0_real_weight_simplify.csv.
 
+## Vitis HLS Before/After Kernel Comparison
+
+### Exact Baseline Components
+- commands:
+  - `python tools/backup_vitis_workspace_config.py --workspace vitis_workspace --timestamp 20260507_000000_pre_comparison_baselines`
+  - `python tools/update_vitis_workspace_components.py --workspace vitis_workspace --components exact_softmax exact_gelu exact_rmsnorm`
+  - `python scripts/run_all_hls.py --kernels exact_softmax exact_gelu exact_rmsnorm --local-timeout-sec 120 --csim-timeout-sec 300 --synth-timeout-sec 900`
+  - `python scripts/parse_hls_reports.py --reports-dir results/hls_reports --out results/csv/hls_kernel_summary.csv`
+  - `python scripts/summarize_hls_results.py --csv results/csv/hls_kernel_summary.csv --out results/hls_kernel_summary.md`
+  - `python scripts/summarize_hls_comparison.py --csv results/csv/hls_kernel_summary.csv --out-csv results/csv/hls_optimization_comparison.csv --out-md results/hls_optimization_comparison.md`
+- new HLS source: `vitis_workspace/hls_src/exact_softmax/`, `vitis_workspace/hls_src/exact_gelu/`, `vitis_workspace/hls_src/exact_rmsnorm/`
+- new Vitis components: `vitis_workspace/exact_softmax/`, `vitis_workspace/exact_gelu/`, `vitis_workspace/exact_rmsnorm/`
+- result csv: `results/csv/hls_optimization_comparison.csv`
+- result summary: `results/hls_optimization_comparison.md`
+- config backup: `vitis_workspace/config_backups/20260507_000000_pre_comparison_baselines/`
+- key observations: all three exact baselines passed local C-sim, Vitis C-sim, and v++ C-synthesis. LUT softmax reduced DSP by 85.7% and improved estimated time by 1.92x versus float exp softmax, while adding 8.1% cycles. PWL GELU reduced LUT by 70.7%, FF by 77.6%, BRAM by 83.3%, and DSP by 96.7% versus float tanh GELU. RMSNorm rsqrt improved estimated time by 2.09x versus float sqrt RMSNorm, but the current NR implementation used more LUT and DSP than the float sqrt baseline.
+- issues: `vitis_hls` is not installed, and `vitis --version` reports HOME configuration space pressure unless `XILINX_VITIS_DATA_DIR` is redirected. The runner uses Vitis Unified/v++ with `/tmp/vitis_data`; no synthesis failure occurred in this pass.
+- fixes: extended HLS automation with comparison group/role metadata, added `scripts/summarize_hls_comparison.py`, regenerated kernel and comparison summaries, and validated Vitis workspace JSON/config files after component creation.
+
 - [pi0_real_weight_simplify] start device=cuda, selected=results/pi0_module_weights/selected_modules.pt.
 
 - [pi0_real_weight_simplify] completed rows=38, csv=results/csv/pi0_real_weight_simplify.csv.
